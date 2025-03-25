@@ -1,0 +1,21 @@
+# Node modules
+node_modules/
+npm-debug.log
+yarn-error.log
+
+# Environment variables
+.env
+
+# Logs
+logs
+*.log
+logs/*.log
+debug.log
+
+# Database
+dump.rdb
+*.sqlite
+
+# OS-specific files
+.DS_Store
+Thumbs.db
