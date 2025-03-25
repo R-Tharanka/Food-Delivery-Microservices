@@ -5,7 +5,7 @@ import Order from "../models/orderModel.js";
 export const createOrder = async (req, res) => {
     try {
         const { customerId, restaurantId, items, totalPrice, deliveryAddress } = req.body;
-
+        
         const order = new Order({
             customerId,
             restaurantId,
