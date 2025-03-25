@@ -30,12 +30,7 @@ const registerUser = async (req, res) => {
         });
 
         if (user) {
-            res.status(201).json({
-                _id: user._id,
-                name: user.name,
-                email: user.email,
-                // token: generateToken(user._id),
-            });
+            res.status(201).json({ message: "User registered successfully!" });
         } else {
             res.status(400).json({ message: "Invalid user data" });
         }
