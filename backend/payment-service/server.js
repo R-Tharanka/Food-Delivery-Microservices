@@ -1,6 +1,6 @@
 require("dotenv").config();
-
 const express = require("express");
+const cors = require("cors");
 const connectDB = require("./config/db");
 const swaggerJsDoc = require("swagger-jsdoc");
 const swaggerUi = require("swagger-ui-express");
@@ -13,10 +13,14 @@ connectDB();
 
 const app = express();
 
-// Use JSON parser for all non-webhook routes
-app.use(express.json());
+// Enable CORS for your frontend
+app.use(cors({ origin: "http://localhost:3000" }));
 
-// For webhook endpoint, we need raw body. (Our webhook route already uses express.raw.)
+// Webhook route (must receive raw body)
+app.use("/api/payment/webhook", webhookRoutes);
+
+// JSON parser for all other routes
+app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // Swagger Configuration
@@ -37,7 +41,6 @@ app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocs));
 
 // Define API routes
 app.use("/api/payment", paymentRoutes);
-app.use("/api/payment/webhook", webhookRoutes);
 
 // Test Route
 app.get("/", (req, res) => res.send("Payment Service Running"));
