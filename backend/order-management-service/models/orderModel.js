@@ -2,11 +2,11 @@ import mongoose from "mongoose";
 
 const orderSchema = new mongoose.Schema(
     {
-        customerId: { type: mongoose.Schema.Types.ObjectId, required: true, ref: "User" },
-        restaurantId: { type: mongoose.Schema.Types.ObjectId, required: true, ref: "Restaurant" },
+        customerId: { type: String, required: true }, // Change to String to allow manual input
+        restaurantId: { type: String, required: true }, // Change to String for manual input
         items: [
             {
-                foodId: { type: mongoose.Schema.Types.ObjectId, required: true, ref: "FoodItem" },
+                foodId: { type: String, required: true }, // Change to String for manual input
                 quantity: { type: Number, required: true },
                 price: { type: Number, required: true }
             }
