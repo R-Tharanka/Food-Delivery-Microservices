@@ -27,7 +27,7 @@ router.post("/", express.raw({ type: "application/json" }), async (req, res) => 
       return res.status(404).json({ error: "Payment record not found" });
     }
 
-    // Only update if the status hasn't been updated before
+    // Update payment status in database
     if (event.type === "payment_intent.succeeded" && existingPayment.status !== "Paid") {
       existingPayment.status = "Paid";
       await existingPayment.save();

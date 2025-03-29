@@ -10,7 +10,7 @@ const PaymentSchema = new mongoose.Schema({
     enum: ["Pending", "Paid", "Failed"],
     default: "Pending",
   },
-  stripePaymentIntentId: { type: String, unique: true },  // Prevent duplicate Stripe payments
+  stripePaymentIntentId: { type: String, unique: true },  // Enforce uniqueness for the Stripe PaymentIntent ID
   createdAt: { type: Date, default: Date.now },
 });
 

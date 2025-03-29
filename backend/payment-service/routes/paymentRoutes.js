@@ -2,7 +2,6 @@ const express = require("express");
 const router = express.Router();
 const Payment = require("../models/PaymentModel");
 const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
-
 require("dotenv").config();
 
 // Process Payment using Stripe
@@ -10,10 +9,16 @@ router.post("/process", async (req, res) => {
   try {
     const { orderId, userId, amount, currency, firstName, lastName, email, phone } = req.body;
 
-    // Check if payment for this order already exists (Pending or Paid)
-    const existingPayment = await Payment.findOne({ orderId });
+    // Check if payment for this order already exists
+    let existingPayment = await Payment.findOne({ orderId });
+
     if (existingPayment) {
-      return res.status(400).json({ error: "Payment for this order already exists." });
+      if (existingPayment.status === "Pending") {
+        // If a pending payment exists, return its clientSecret
+        return res.json({ clientSecret: existingPayment.stripePaymentIntentId, paymentId: existingPayment._id });
+      } else {
+        return res.status(400).json({ error: "Payment for this order has already been processed." });
+      }
     }
 
     // Convert amount to the smallest currency unit (e.g., cents)
@@ -34,7 +39,7 @@ router.post("/process", async (req, res) => {
       amount,
       currency: currency || "usd",
       status: "Pending",
-      stripePaymentIntentId: paymentIntent.id,
+      stripePaymentIntentId: paymentIntent.client_secret, // Store client_secret instead of paymentIntent.id
     });
     await payment.save();
 
