@@ -30,11 +30,18 @@ function Header() {
           <span className="cart-count">{cartCount}</span>
         </motion.div>
         <motion.button
-          className="login-signup"
+          className="login-button"
           whileHover={{ scale: 1.1 }}
           whileTap={{ scale: 0.9 }}
         >
-          Login / Signup
+          Login
+        </motion.button>
+        <motion.button
+          className="signup-button"
+          whileHover={{ scale: 1.1 }}
+          whileTap={{ scale: 0.9 }}
+        >
+          Signup
         </motion.button>
       </div>
     </motion.header>

@@ -27,13 +27,6 @@ function Home() {
             >
               Order Now
             </motion.a>
-            <motion.a 
-              href="/menu" 
-              className="hero-button secondary"
-              whileHover={{ scale: 1.1 }}
-            >
-              View Menu
-            </motion.a>
           </div>
         </motion.div>
 

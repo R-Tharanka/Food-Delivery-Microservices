@@ -1,6 +1,7 @@
 import React from "react";
 import "../styles/footer.css";
 import { motion } from "framer-motion";
+import { FaFacebook, FaTwitter, FaInstagram } from "react-icons/fa";
 
 function Footer() {
   return (
@@ -10,23 +11,27 @@ function Footer() {
       animate={{ y: 0, opacity: 1 }}
       transition={{ duration: 0.5 }}
     >
-      <div className="quick-links">
-        <a href="/about">About</a>
-        <a href="/faq">FAQ</a>
-        <a href="/contact">Contact</a>
-        <a href="/privacy">Privacy Policy</a>
+      <div className="footer-row">
+        <div className="footer-column">
+          <a href="/about">About</a>
+          <a href="/faq">FAQ</a>
+          <a href="/contact">Contact</a>
+          <a href="/privacy">Privacy Policy</a>
+        </div>
+        <div className="footer-column">
+          <a href="#"><FaFacebook /> Facebook</a>
+          <a href="#"><FaTwitter /> Twitter</a>
+          <a href="#"><FaInstagram /> Instagram</a>
+        </div>
+        <div className="footer-column">
+          <p>Subscribe to our newsletter:</p>
+          <input type="email" placeholder="Enter your email" />
+          <button>Subscribe</button>
+        </div>
       </div>
-      <div className="social-links">
-        <a href="#">Facebook</a>
-        <a href="#">Twitter</a>
-        <a href="#">Instagram</a>
+      <div className="footer-row">
+        <p>&copy; 2023 FoodieExpress. All rights reserved.</p>
       </div>
-      <div className="newsletter">
-        <p>Subscribe to our newsletter:</p>
-        <input type="email" placeholder="Enter your email" />
-        <button>Subscribe</button>
-      </div>
-      <p>&copy; 2023 FoodieExpress. All rights reserved.</p>
     </motion.footer>
   );
 }
