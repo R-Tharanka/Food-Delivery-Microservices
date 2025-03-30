@@ -4,7 +4,6 @@ const Payment = require("../models/PaymentModel");
 const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
 require("dotenv").config();
 
-// Webhook endpoint (raw body is required)
 router.post("/", express.raw({ type: "application/json" }), async (req, res) => {
   const sig = req.headers["stripe-signature"];
   let event;
@@ -21,13 +20,12 @@ router.post("/", express.raw({ type: "application/json" }), async (req, res) => 
 
   try {
     const existingPayment = await Payment.findOne({ orderId });
-
     if (!existingPayment) {
       console.warn(`⚠️ Payment record for order ${orderId} not found.`);
       return res.status(404).json({ error: "Payment record not found" });
     }
 
-    // Update payment status in database
+    // Update payment status based on the webhook event.
     if (event.type === "payment_intent.succeeded" && existingPayment.status !== "Paid") {
       existingPayment.status = "Paid";
       await existingPayment.save();

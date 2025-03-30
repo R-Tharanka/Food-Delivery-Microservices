@@ -1,10 +1,9 @@
-// src/pages/Checkout.js
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { loadStripe } from "@stripe/stripe-js";
-import { Elements, CardElement, useStripe, useElements } from "@stripe/react-stripe-js";
+import { Elements, useStripe, useElements, CardNumberElement, CardExpiryElement, CardCvcElement } from "@stripe/react-stripe-js";
 import axios from "axios";
+import "../styles/checkout.css";
 
-// Load your Stripe publishable key from environment variables
 const stripePromise = loadStripe(process.env.REACT_APP_STRIPE_PUBLISHABLE_KEY);
 
 const CheckoutForm = () => {
@@ -14,71 +13,138 @@ const CheckoutForm = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [message, setMessage] = useState("");
+  const [cardType, setCardType] = useState("");
+  const [disablePayment, setDisablePayment] = useState(false);
 
-  // Create PaymentIntent on the backend
+  // Example order data – in production, this should come from your Order Service
+  const orderData = {
+    orderId: "ORDER12345",
+    userId: "USER67890",
+    amount: 48,
+    currency: "usd",
+    firstName: "John",
+    lastName: "Doe",
+    email: "johndoe@example.com",
+    phone: "0771234567",
+  };
+
+  useEffect(() => {
+    createPaymentIntent();
+  }, []);
+
   const createPaymentIntent = async () => {
     try {
-      const response = await axios.post("http://localhost:5004/api/payment/process", {
-        orderId: "ORDER12345",
-        userId: "USER67890",
-        amount: 50, // Example amount in dollars (or your currency unit)
-        currency: "usd", // Use the same currency as in your backend
-        firstName: "John",
-        lastName: "Doe",
-        email: "johndoe@example.com",
-        phone: "0771234567",
-      });
-      setClientSecret(response.data.clientSecret);
+      const response = await axios.post("http://localhost:5004/api/payment/process", orderData);
+      console.log("Response from payment API:", response.data);
+      
+      if (response.data.paymentStatus === "Paid" || response.data.disablePayment) {
+        setMessage("✅ This order has already been paid successfully.");
+        setDisablePayment(true);
+        return;
+      }
+      
+      if (response.data.clientSecret) {
+        setClientSecret(response.data.clientSecret);
+      } else {
+        setError("⚠️ No valid payment secret found.");
+      }
     } catch (err) {
-      console.error("Error creating PaymentIntent", err);
-      setError("Failed to create payment. Please try again.");
+      console.error("Error creating PaymentIntent", err.response?.data || err.message);
+      setError("❌ Failed to create payment. Please try again.");
+    }
+  };
+
+  const handleCardChange = (event) => {
+    if (event.error) {
+      setError(event.error.message);
+    } else {
+      setError(null);
+    }
+    if (event.brand) {
+      setCardType(event.brand);
     }
   };
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    if (!stripe || !elements) {
+    if (!stripe || !elements || !clientSecret) {
+      setError("⚠️ Payment secret is missing.");
       return;
     }
     setLoading(true);
     setError(null);
-    
-    // Confirm the card payment
-    const cardElement = elements.getElement(CardElement);
-    const { error: confirmError, paymentIntent } = await stripe.confirmCardPayment(clientSecret, {
-      payment_method: {
-        card: cardElement,
-        billing_details: {
-          name: "John Doe",
-          email: "johndoe@example.com",
-        },
+    setMessage("");
+
+    const cardElement = elements.getElement(CardNumberElement);
+    const { error, paymentMethod } = await stripe.createPaymentMethod({
+      type: "card",
+      card: cardElement,
+      billing_details: {
+        name: `${orderData.firstName} ${orderData.lastName}`,
+        email: orderData.email,
       },
     });
 
-    if (confirmError) {
-      setError(confirmError.message);
+    if (error) {
+      setError(error.message);
       setLoading(false);
-    } else if (paymentIntent && paymentIntent.status === "succeeded") {
-      setMessage("Payment successful!");
-      setLoading(false);
+      return;
     }
+
+    console.log("Using Client Secret:", clientSecret);
+    if (!clientSecret.includes("_secret_")) {
+      setError("⚠️ Invalid payment secret format.");
+      setLoading(false);
+      return;
+    }
+
+    try {
+      const { paymentIntent, error: confirmError } = await stripe.confirmCardPayment(clientSecret, {
+        payment_method: paymentMethod.id,
+      });
+
+      if (confirmError) {
+        setError(confirmError.message);
+      } else if (paymentIntent.status === "succeeded") {
+        setMessage("✅ Payment Successful!");
+        setDisablePayment(true);
+      } else {
+        setError("❌ Payment failed. Please try again.");
+      }
+    } catch (err) {
+      setError("❌ An unexpected error occurred. Please try again.");
+    }
+    setLoading(false);
   };
 
-  // Create PaymentIntent when component mounts (or when user clicks a "Pay" button)
-  React.useEffect(() => {
-    createPaymentIntent();
-  }, []);
-
   return (
-    <form onSubmit={handleSubmit}>
-      <h2>Checkout</h2>
-      <CardElement options={{ hidePostalCode: true }} />
-      <button type="submit" disabled={!stripe || loading}>
-        {loading ? "Processing..." : "Pay"}
-      </button>
-      {error && <div style={{ color: "red" }}>{error}</div>}
-      {message && <div style={{ color: "green" }}>{message}</div>}
-    </form>
+    <div className="checkout-container">
+      <h2 className="checkout-title">Secure Payment</h2>
+      <form onSubmit={handleSubmit} className="checkout-form">
+        <div className="input-group">
+          <label>Card Number</label>
+          <CardNumberElement className="stripe-input" onChange={handleCardChange} />
+          {cardType && <span className={`card-icon ${cardType}`}></span>}
+        </div>
+
+        <div className="input-group">
+          <label>Expiry Date</label>
+          <CardExpiryElement className="stripe-input" onChange={handleCardChange} />
+        </div>
+
+        <div className="input-group">
+          <label>CVC</label>
+          <CardCvcElement className="stripe-input" onChange={handleCardChange} />
+        </div>
+
+        <button type="submit" disabled={!stripe || loading || disablePayment} className="checkout-btn">
+          {loading ? <span className="spinner"></span> : "Pay"}
+        </button>
+
+        {error && <div className="checkout-error">{error}</div>}
+        {message && <div className="checkout-success">{message}</div>}
+      </form>
+    </div>
   );
 };
 
