@@ -18,7 +18,7 @@ const CheckoutForm = () => {
 
   // Example order data – in production, this should come from your Order Service
   const orderData = {
-    orderId: "ORDER12345",
+    orderId: "ORDER834388",
     userId: "USER67890",
     amount: 48,
     currency: "usd",
