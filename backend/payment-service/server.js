@@ -17,7 +17,7 @@ const app = express();
 app.use(cors({ origin: "http://localhost:3000" }));
 
 // Webhook route (must receive raw body)
-app.use("/api/payment/webhook", webhookRoutes);
+app.use("/api/payment/webhook", express.raw({ type: "application/json" }), webhookRoutes);
 
 // JSON parser for all other routes
 app.use(express.json());

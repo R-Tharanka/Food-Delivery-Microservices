@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 
 const PaymentSchema = new mongoose.Schema({
-  orderId: { type: String, required: true, unique: true },  // Enforce uniqueness for orderId
+  orderId: { type: String, required: true, unique: true }, // Unique orderId
   userId: { type: String, required: true },
   amount: { type: Number, required: true },
   currency: { type: String, default: "usd" },
@@ -10,7 +10,8 @@ const PaymentSchema = new mongoose.Schema({
     enum: ["Pending", "Paid", "Failed"],
     default: "Pending",
   },
-  stripePaymentIntentId: { type: String, unique: true },  // Enforce uniqueness for the Stripe PaymentIntent ID
+  // We store the Stripe PaymentIntent client secret here.
+  stripePaymentIntentId: { type: String, unique: true },
   createdAt: { type: Date, default: Date.now },
 });
 

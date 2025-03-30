@@ -1,53 +1,72 @@
 const express = require("express");
+const axios = require("axios");
 const router = express.Router();
 const Payment = require("../models/PaymentModel");
 const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
 require("dotenv").config();
 
-// Process Payment using Stripe
 router.post("/process", async (req, res) => {
   try {
-    const { orderId, userId, amount, currency, firstName, lastName, email, phone } = req.body;
+    const { orderId, userId, amount, currency, email } = req.body;
 
-    // Check if payment for this order already exists
-    let existingPayment = await Payment.findOne({ orderId });
+    // Atomically find a payment record or create one with stripePaymentIntentId set to null.
+    let payment = await Payment.findOneAndUpdate(
+      { orderId },
+      {
+        $setOnInsert: {
+          orderId,
+          userId,
+          amount,
+          currency: currency || "usd",
+          status: "Pending",
+          stripePaymentIntentId: null,
+        },
+      },
+      { new: true, upsert: true }
+    );
 
-    if (existingPayment) {
-      if (existingPayment.status === "Pending") {
-        // If a pending payment exists, return its clientSecret
-        return res.json({ clientSecret: existingPayment.stripePaymentIntentId, paymentId: existingPayment._id });
+    // If the payment record already has a client secret, then a PaymentIntent was already created.
+    if (payment.stripePaymentIntentId) {
+      console.log("Existing Payment Found:", payment);
+      if (payment.status === "Paid") {
+        return res.status(200).json({
+          message: "✅ This order has already been paid successfully.",
+          paymentStatus: "Paid",
+          disablePayment: true,
+        });
       } else {
-        return res.status(400).json({ error: "Payment for this order has already been processed." });
+        // Pending payment: return the existing client secret.
+        return res.json({
+          clientSecret: payment.stripePaymentIntentId,
+          paymentId: payment._id,
+          disablePayment: false,
+        });
       }
     }
 
-    // Convert amount to the smallest currency unit (e.g., cents)
+    // Otherwise, no PaymentIntent exists—create a new one.
     const amountInCents = Math.round(parseFloat(amount) * 100);
-
-    // Create a PaymentIntent with Stripe
     const paymentIntent = await stripe.paymentIntents.create({
       amount: amountInCents,
       currency: currency || "usd",
       metadata: { orderId, userId },
       receipt_email: email,
     });
+    console.log("Created PaymentIntent:", paymentIntent);
 
-    // Store payment details in the database
-    const payment = new Payment({
-      orderId,
-      userId,
-      amount,
-      currency: currency || "usd",
-      status: "Pending",
-      stripePaymentIntentId: paymentIntent.client_secret, // Store client_secret instead of paymentIntent.id
-    });
+    // Update the payment record with the PaymentIntent client secret.
+    payment.stripePaymentIntentId = paymentIntent.client_secret;
     await payment.save();
+    console.log("Stored Client Secret:", payment.stripePaymentIntentId);
 
-    // Return the client secret to the frontend for completion
-    res.json({ clientSecret: paymentIntent.client_secret, paymentId: payment._id });
+    return res.json({
+      clientSecret: paymentIntent.client_secret,
+      paymentId: payment._id,
+      disablePayment: false,
+    });
   } catch (error) {
-    console.error("Stripe Payment processing error:", error.message);
-    res.status(500).json({ error: error.message });
+    console.error("❌ Stripe Payment processing error:", error.message);
+    res.status(500).json({ error: "❌ Payment processing failed. Please try again." });
   }
 });
 
