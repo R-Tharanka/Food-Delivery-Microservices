@@ -81,3 +81,20 @@
 .login-signup:hover {
   transform: scale(1.1);
 }
+
+/* Added styles for login and signup buttons */
+.login-button, .signup-button {
+  background-color: white;
+  color: #ff6f61;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: transform 0.3s, background-color 0.3s;
+}
+
+.login-button:hover, .signup-button:hover {
+  transform: scale(1.1);
+  background-color: #ffe0b2;
+}
