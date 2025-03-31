@@ -75,6 +75,7 @@ function Home() {
               <motion.div
                 key={index}
                 className="step redesigned-step"
+                data-step={index + 1} /* Added data-step attribute for step numbers */
                 initial={{ opacity: 0, y: 50 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}

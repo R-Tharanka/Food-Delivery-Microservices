@@ -140,13 +140,27 @@
   margin-bottom: 20px; /* Added spacing below the heading */
 }
 
+/* Added vertical lines to connect each step in the horizontal flow layout */
 .how-it-works .steps {
   display: flex;
   flex-wrap: wrap; /* Allow wrapping for smaller screens */
   justify-content: center; /* Center align the steps */
   gap: 20px; /* Added gap between steps */
+  position: relative; /* Set relative positioning for the container */
 }
 
+.how-it-works .steps::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 0;
+  right: 0;
+  height: 2px; /* Thickness of the line */
+  background-color: var(--color-black); /* Line color */
+  z-index: 0; /* Place the line behind the steps */
+}
+
+/* Added step numbers to the top-left corner of each step card */
 .how-it-works .step {
   display: flex;
   flex-direction: column;
@@ -157,6 +171,23 @@
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Added shadow for depth */
   padding: 20px; /* Added padding inside each step */
   transition: transform 0.3s ease, box-shadow 0.3s ease; /* Smooth hover effect */
+  position: relative; /* Set relative positioning for each step */
+  z-index: 1; /* Ensure steps are above the line */
+}
+
+/* Updated step numbers to appear in the top-right corner of each card */
+.how-it-works .step::before {
+  content: attr(data-step); /* Use the data-step attribute for the step number */
+  position: absolute;
+  top: 10px;
+  right: 10px; /* Moved to the top-right corner */
+  background-color: var(--color-orange); /* Background color for the step number */
+  color: var(--color-white); /* Predefined white text color */
+  font-size: 1rem;
+  font-weight: bold;
+  padding: 5px 10px;
+  border-radius: 50%; /* Circular shape for the step number */
+  z-index: 2; /* Ensure it appears above other elements */
 }
 
 .how-it-works .step:hover {
