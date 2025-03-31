@@ -1,10 +1,31 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 import "../styles/home.css";
 
+// Import images
+import burgerImage from "../assets/images/burgers.jpg";
+import pizzaImage from "../assets/images/pizzas.png";
+import sushiImage from "../assets/images/sushi.jpg";
+import dessertImage from "../assets/images/desserts.png";
+import step1Icon from "../assets/images/menu.png";
+import step2Icon from "../assets/images/order.png";
+import step3Icon from "../assets/images/track.png";
+import step4Icon from "../assets/images/meal.png";
+import user1Image from "../assets/images/sushi.jpg";
+
 function Home() {
+  const [lineVisible, setLineVisible] = useState(false);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setLineVisible(true);
+    }, 1500); // Delay to ensure all cards are visible
+
+    return () => clearTimeout(timer);
+  }, []);
+
   return (
     <div className="home-container">
       <Header />
@@ -34,7 +55,12 @@ function Home() {
         <section className="featured-categories">
           <h2>Popular Categories</h2>
           <div className="categories-grid">
-            {['Burgers', 'Pizzas', 'Sushi', 'Desserts'].map((category, index) => (
+            {[
+              { name: 'Burgers', image: burgerImage },
+              { name: 'Pizzas', image: pizzaImage },
+              { name: 'Sushi', image: sushiImage },
+              { name: 'Desserts', image: dessertImage }
+            ].map((category, index) => (
               <motion.div 
                 key={index} 
                 className="category-card"
@@ -44,8 +70,8 @@ function Home() {
                 viewport={{ once: true }}
                 transition={{ duration: 0.5, delay: index * 0.2 }}
               >
-                <img src={`/assets/images/${category.toLowerCase()}.jpg`} alt={category} />
-                <h3>{category}</h3>
+                <img src={category.image} alt={category.name} />
+                <h3>{category.name}</h3>
               </motion.div>
             ))}
           </div>
@@ -54,18 +80,22 @@ function Home() {
         {/* How It Works Section */}
         <section className="how-it-works">
           <h2>How It Works</h2>
-          <div className="steps">
-            {['Browse Menu', 'Order', 'Track', 'Enjoy!'].map((step, index) => (
-              <motion.div 
-                key={index} 
-                className="step"
-                initial={{ opacity: 0, x: -50 }}
-                whileInView={{ opacity: 1, x: 0 }}
+          <div className={`steps ${lineVisible ? "appear-line" : ""}`}>
+            {[{ step: 'Browse Menu', icon: step1Icon }, { step: 'Order', icon: step2Icon }, { step: 'Track', icon: step3Icon }, { step: 'Enjoy!', icon: step4Icon }].map((item, index) => (
+              <motion.div
+                key={index}
+                className="step redesigned-step"
+                data-step={index + 1} /* Added data-step attribute for step numbers */
+                initial={{ opacity: 0, y: 50 }}
+                whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.5, delay: index * 0.2 }}
               >
-                <img src={`/assets/icons/step-${index + 1}.png`} alt={step} />
-                <p>{step}</p>
+                <div className="step-icon redesigned-step-icon">
+                  <img src={item.icon} alt={item.step} />
+                </div>
+                <h3 className="step-title">{item.step}</h3>
+                <p className="step-description">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin vel nisi id odio tincidunt facilisis.</p>
               </motion.div>
             ))}
           </div>
@@ -83,29 +113,11 @@ function Home() {
           >
             {/* Example testimonial */}
             <div className="testimonial">
-              <img src="/assets/images/user1.jpg" alt="User 1" />
+              <img src={user1Image} alt="User 1" />
               <p>"Amazing service and delicious food! Highly recommend."</p>
               <div className="stars">★★★★★</div>
             </div>
           </motion.div>
-        </section>
-
-        {/* Call-to-Action Section */}
-        <section className="cta-section">
-          <motion.h2 
-            initial={{ opacity: 0, scale: 0.8 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.8 }}
-          >
-            Order Now & Satisfy Your Cravings!
-          </motion.h2>
-          <motion.a 
-            href="/menu" 
-            className="cta-button"
-            whileHover={{ scale: 1.1, brightness: 1.2 }}
-          >
-            Order Now
-          </motion.a>
         </section>
       </main>
 

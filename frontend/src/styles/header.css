@@ -1,10 +1,12 @@
-/* Header Styles */
+@import './colors.css';
+
+/* Updated Header Styles */
 .home-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background-color: #ff6f61;
-  color: white;
+  background-color: var(--color-white);
+  color: var(--color-black);
   padding: 1rem 2rem;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   position: sticky;
@@ -13,7 +15,25 @@
   transition: all 0.3s ease-in-out;
 }
 
+.header-left {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.hamburger-menu {
+  font-size: 1.5rem;
+  cursor: pointer;
+  transition: transform 0.3s;
+}
+
+.hamburger-menu:hover {
+  transform: scale(1.1);
+}
+
 .logo {
+  text-decoration: none; /* Remove underline */
+  color: inherit; /* Inherit text color */
   font-size: 1.5rem;
   font-weight: bold;
   cursor: pointer;
@@ -24,68 +44,16 @@
   transform: scale(1.1);
 }
 
-.nav-links {
-  display: flex;
-  gap: 1.5rem;
-}
-
-.nav-links a {
-  color: white;
-  text-decoration: none;
-  font-size: 1rem;
-  transition: color 0.3s, transform 0.3s;
-}
-
-.nav-links a:hover {
-  color: #ffe0b2;
-  transform: scale(1.1);
-}
-
-.order-now {
-  font-weight: bold;
-  color: #ffe0b2;
-}
-
-.header-actions {
+.header-right {
   display: flex;
   align-items: center;
   gap: 1rem;
 }
 
-.cart-icon {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  cursor: pointer;
-}
-
-.cart-count {
-  background-color: white;
-  color: #ff6f61;
-  border-radius: 50%;
-  padding: 0.2rem 0.5rem;
-  font-size: 0.8rem;
-}
-
-.login-signup {
-  background-color: white;
-  color: #ff6f61;
-  border: none;
-  padding: 0.5rem 1rem;
-  border-radius: 5px;
-  cursor: pointer;
-  font-size: 1rem;
-  transition: transform 0.3s;
-}
-
-.login-signup:hover {
-  transform: scale(1.1);
-}
-
-/* Added styles for login and signup buttons */
+/* Updated the background color of login and signup buttons to black */
 .login-button, .signup-button {
-  background-color: white;
-  color: #ff6f61;
+  background-color: var(--color-black); /* Changed to black */
+  color: var(--color-white);
   border: none;
   padding: 0.5rem 1rem;
   border-radius: 5px;
@@ -96,5 +64,5 @@
 
 .login-button:hover, .signup-button:hover {
   transform: scale(1.1);
-  background-color: #ffe0b2;
+  background-color: var(--color-orange);
 }

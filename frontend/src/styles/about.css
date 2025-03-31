@@ -1,0 +1,12 @@
+.about-container {
+  padding: 20px;
+  font-family: Arial, sans-serif;
+}
+
+.about-container h1 {
+  color: #333;
+}
+
+.about-container p {
+  color: #555;
+}

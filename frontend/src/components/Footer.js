@@ -2,6 +2,7 @@ import React from "react";
 import "../styles/footer.css";
 import { motion } from "framer-motion";
 import { FaFacebook, FaTwitter, FaInstagram } from "react-icons/fa";
+import { Link } from "react-router-dom";
 
 function Footer() {
   return (
@@ -13,10 +14,11 @@ function Footer() {
     >
       <div className="footer-row">
         <div className="footer-column">
-          <a href="/about">About</a>
+          <Link to="/">Home</Link>
+          <Link to="/about">About</Link>
           <a href="/faq">FAQ</a>
-          <a href="/contact">Contact</a>
-          <a href="/privacy">Privacy Policy</a>
+          <a href="/contact">Contact and Feedback</a>
+          <Link to="/privacy">Privacy Policy</Link>
         </div>
         <div className="footer-column">
           <a href="#"><FaFacebook /> Facebook</a>
