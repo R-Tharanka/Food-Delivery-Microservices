@@ -32,6 +32,8 @@
 }
 
 .logo {
+  text-decoration: none; /* Remove underline */
+  color: inherit; /* Inherit text color */
   font-size: 1.5rem;
   font-weight: bold;
   cursor: pointer;

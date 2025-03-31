@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
 import React from "react";
+import { Link } from "react-router-dom";
 import "../styles/header.css";
 import Sidebar from "./Sidebar";
 
@@ -21,7 +22,7 @@ function Header() {
       >
         <div className="header-left">
           <div className="hamburger-menu" onClick={toggleSidebar}>☰</div>
-          <div className="logo">SkyDish</div>
+          <Link to="/" className="logo">SkyDish</Link>
         </div>
         <div className="header-right">
           <motion.button
