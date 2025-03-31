@@ -4,6 +4,17 @@ import Header from "../components/Header";
 import Footer from "../components/Footer";
 import "../styles/home.css";
 
+// Import images
+import burgerImage from "../assets/images/burgers.jpg";
+import pizzaImage from "../assets/images/pizzas.png";
+import sushiImage from "../assets/images/sushi.jpg";
+import dessertImage from "../assets/images/desserts.png";
+import step1Icon from "../assets/images/sushi.jpg";
+import step2Icon from "../assets/images/sushi.jpg";
+import step3Icon from "../assets/images/sushi.jpg";
+import step4Icon from "../assets/images/sushi.jpg";
+import user1Image from "../assets/images/sushi.jpg";
+
 function Home() {
   return (
     <div className="home-container">
@@ -34,7 +45,12 @@ function Home() {
         <section className="featured-categories">
           <h2>Popular Categories</h2>
           <div className="categories-grid">
-            {['Burgers', 'Pizzas', 'Sushi', 'Desserts'].map((category, index) => (
+            {[
+              { name: 'Burgers', image: burgerImage },
+              { name: 'Pizzas', image: pizzaImage },
+              { name: 'Sushi', image: sushiImage },
+              { name: 'Desserts', image: dessertImage }
+            ].map((category, index) => (
               <motion.div 
                 key={index} 
                 className="category-card"
@@ -44,8 +60,8 @@ function Home() {
                 viewport={{ once: true }}
                 transition={{ duration: 0.5, delay: index * 0.2 }}
               >
-                <img src={`/assets/images/${category.toLowerCase()}.jpg`} alt={category} />
-                <h3>{category}</h3>
+                <img src={category.image} alt={category.name} />
+                <h3>{category.name}</h3>
               </motion.div>
             ))}
           </div>
@@ -55,7 +71,12 @@ function Home() {
         <section className="how-it-works">
           <h2>How It Works</h2>
           <div className="steps">
-            {['Browse Menu', 'Order', 'Track', 'Enjoy!'].map((step, index) => (
+            {[
+              { step: 'Browse Menu', icon: step1Icon },
+              { step: 'Order', icon: step2Icon },
+              { step: 'Track', icon: step3Icon },
+              { step: 'Enjoy!', icon: step4Icon }
+            ].map((item, index) => (
               <motion.div 
                 key={index} 
                 className="step"
@@ -64,8 +85,8 @@ function Home() {
                 viewport={{ once: true }}
                 transition={{ duration: 0.5, delay: index * 0.2 }}
               >
-                <img src={`/assets/icons/step-${index + 1}.png`} alt={step} />
-                <p>{step}</p>
+                <img src={item.icon} alt={item.step} />
+                <p>{item.step}</p>
               </motion.div>
             ))}
           </div>
@@ -83,7 +104,7 @@ function Home() {
           >
             {/* Example testimonial */}
             <div className="testimonial">
-              <img src="/assets/images/user1.jpg" alt="User 1" />
+              <img src={user1Image} alt="User 1" />
               <p>"Amazing service and delicious food! Highly recommend."</p>
               <div className="stars">★★★★★</div>
             </div>

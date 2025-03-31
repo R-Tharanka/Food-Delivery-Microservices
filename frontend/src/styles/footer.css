@@ -1,7 +1,9 @@
+@import './colors.css';
+
 /* Footer Styles */
 .home-footer {
-  background-color: #333;
-  color: white;
+  background-color: var(--color-black);
+  color: var(--color-white);
   text-align: center;
   padding-bottom: 10px;
   padding-top: 30px;
@@ -28,14 +30,14 @@
 }
 
 .footer-column a {
-  color: #ff6f61;
+  color: var(--color-orange);
   text-decoration: none;
   font-size: 1rem;
   transition: color 0.3s, transform 0.3s;
 }
 
 .footer-column a:hover {
-  color: #ffe0b2;
+  color: var(--color-green);
   transform: scale(1.1);
 }
 

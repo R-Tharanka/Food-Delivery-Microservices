@@ -1,3 +1,5 @@
+@import './colors.css';
+
 /* filepath: d:\work\Year - 3\sem 1\ds\project\Food-Delivery-Microservices\frontend\src\styles\home.css */
 
 /* General styles for the home page */
@@ -15,15 +17,16 @@
   justify-content: center;
   align-items: center;
   flex-direction: column;
-  padding: 20px;
+  padding: 0; /* Removed padding */
 }
 
 .hero-section {
   text-align: center;
-  background: linear-gradient(to right, #ff7e5f, #feb47b);
-  padding: 50px;
-  border-radius: 10px;
+  background: var(--color-orange);
+  color: var(--color-white);
+  width: 100%;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  padding: 50px 0; /* Set top and bottom padding to 50px, left and right to 0 */
 }
 
 .hero-title {
@@ -38,17 +41,60 @@
   margin-bottom: 30px;
 }
 
+/* Update CTA button hover state to change border color to green with animation */
 .hero-button {
   display: inline-block;
   padding: 10px 20px;
   font-size: 1rem;
-  color: #fff;
-  background-color: #ff6f61;
+  color: var(--color-white);
+  background-color: var(--color-black);
   text-decoration: none;
   border-radius: 5px;
   transition: background-color 0.3s ease;
+  border: 2px solid transparent; /* Initial border state */
+  transition: border-color 0.3s ease; /* Add border animation */
 }
 
+/* Update hero button hover state to green */
 .hero-button:hover {
-  background-color: #e65c50;
+  border-color: var(--color-green); /* Change border color to green on hover */
+}
+
+.featured-categories {
+  padding: 20px; /* Added padding for featured categories section */
+}
+
+.featured-categories .category-card img {
+  width: 100%;
+  height: auto;
+  border-radius: 10px;
+  object-fit: cover;
+}
+
+.how-it-works {
+  padding: 20px; /* Added padding for how-it-works section */
+}
+
+.how-it-works .step img {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-bottom: 10px;
+}
+
+.testimonials {
+  padding: 20px; /* Added padding for testimonials section */
+}
+
+.testimonials .testimonial img {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-bottom: 10px;
+}
+
+.cta-section {
+  padding: 20px; /* Added padding for call-to-action section */
 }

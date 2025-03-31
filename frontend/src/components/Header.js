@@ -1,50 +1,48 @@
+import { useState } from "react";
 import { motion } from "framer-motion";
-import React, { useState } from "react";
+import React from "react";
 import "../styles/header.css";
+import Sidebar from "./Sidebar";
 
 function Header() {
-  const [cartCount, setCartCount] = useState(0);
+  const [isSidebarOpen, setSidebarOpen] = useState(false);
+
+  const toggleSidebar = () => {
+    setSidebarOpen(!isSidebarOpen);
+  };
 
   return (
-    <motion.header
-      className="home-header"
-      initial={{ y: -100, opacity: 0 }}
-      animate={{ y: 0, opacity: 1 }}
-      transition={{ duration: 0.5 }}
-    >
-      <div className="logo">FoodieExpress</div>
-      <nav className="nav-links">
-        <a href="/">Home</a>
-        <a href="/menu">Menu</a>
-        <a href="/about">About</a>
-        <a href="/contact">Contact</a>
-        <a href="/order" className="order-now">Order Now</a>
-      </nav>
-      <div className="header-actions">
-        <motion.div
-          className="cart-icon"
-          whileHover={{ scale: 1.1 }}
-          whileTap={{ scale: 0.9 }}
-        >
-          <span>🛒</span>
-          <span className="cart-count">{cartCount}</span>
-        </motion.div>
-        <motion.button
-          className="login-button"
-          whileHover={{ scale: 1.1 }}
-          whileTap={{ scale: 0.9 }}
-        >
-          Login
-        </motion.button>
-        <motion.button
-          className="signup-button"
-          whileHover={{ scale: 1.1 }}
-          whileTap={{ scale: 0.9 }}
-        >
-          Signup
-        </motion.button>
-      </div>
-    </motion.header>
+    <>
+      <motion.header
+        className="home-header"
+        initial={{ y: -100, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        transition={{ duration: 0.5 }}
+      >
+        <div className="header-left">
+          <div className="hamburger-menu" onClick={toggleSidebar}>☰</div>
+          <div className="logo">SkyDish</div>
+        </div>
+        <div className="header-right">
+          <motion.button
+            className="login-button"
+            whileHover={{ scale: 1.1 }}
+            whileTap={{ scale: 0.9 }}
+          >
+            Login
+          </motion.button>
+          <motion.button
+            className="signup-button"
+            whileHover={{ scale: 1.1 }}
+            whileTap={{ scale: 0.9 }}
+          >
+            Signup
+          </motion.button>
+        </div>
+      </motion.header>
+
+      <Sidebar isOpen={isSidebarOpen} onClose={() => setSidebarOpen(false)} />
+    </>
   );
 }
 
