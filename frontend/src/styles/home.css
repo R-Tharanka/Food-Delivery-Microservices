@@ -60,15 +60,71 @@
   border-color: var(--color-green); /* Change border color to green on hover */
 }
 
+/* Updated styles for the featured-categories section */
 .featured-categories {
-  padding: 20px; /* Added padding for featured categories section */
+  padding: 40px 20px; /* Increased padding for better spacing */
+  background-color: var(--color-light-gray); /* Added background color */
+  text-align: center; /* Center align text */
+}
+
+.featured-categories h2 {
+  font-size: 2rem;
+  color: var(--color-black);
+  margin-bottom: 20px; /* Added spacing below the heading */
+}
+
+/* Updated styles for the featured-categories section to dynamically adjust the number of categories displayed per row based on screen width */
+.featured-categories .categories-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr); /* Default to 4 categories per row */
+  gap: 20px; /* Added gap between grid items */
+  align-items: center; /* Center align items vertically */
+  justify-items: stretch; /* Stretch items to fill the grid cell */
+  justify-content: center; /* Center align the grid content */
+}
+
+@media (max-width: 1200px) {
+  .featured-categories .categories-grid {
+    grid-template-columns: repeat(3, 1fr); /* Reduce to 3 categories per row for medium screens */
+  }
+}
+
+@media (max-width: 768px) {
+  .featured-categories .categories-grid {
+    grid-template-columns: repeat(2, 1fr); /* Reduce to 2 categories per row for small screens */
+  }
+}
+
+@media (max-width: 480px) {
+  .featured-categories .categories-grid {
+    grid-template-columns: 1fr; /* Display 1 category per row for very small screens */
+  }
+}
+
+.featured-categories .category-card {
+  background-color: var(--color-white);
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Added shadow for depth */
+  overflow: hidden; /* Ensure content stays within the card */
+  transition: transform 0.3s ease, box-shadow 0.3s ease; /* Smooth hover effect */
+}
+
+.featured-categories .category-card:hover {
+  transform: translateY(-10px); /* Lift card on hover */
+  box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15); /* Enhance shadow on hover */
 }
 
 .featured-categories .category-card img {
   width: 100%;
-  height: auto;
-  border-radius: 10px;
-  object-fit: cover;
+  height: 150px; /* Fixed height for uniformity */
+  object-fit: cover; /* Ensure image covers the area */
+}
+
+.featured-categories .category-card h3 {
+  font-size: 1.2rem;
+  color: var(--color-black);
+  margin: 10px 0;
+  padding: 0 10px; /* Added padding for better spacing */
 }
 
 .how-it-works {
