@@ -1,6 +1,6 @@
 # Food Delivery Microservices
 
-A cloud-native food ordering & delivery platform using MERN stack with microservices architecture.
+A cloud-native food ordering & delivery platform using the MERN stack with a microservices architecture.
 
 ## Features
 - User Authentication (JWT)
@@ -11,37 +11,62 @@ A cloud-native food ordering & delivery platform using MERN stack with microserv
 - Notifications (SMS/Email)
 
 ## Tech Stack
-- Backend: Node.js, Express, MongoDB
-- Frontend: React, Redux
-- DevOps: Docker, Kubernetes
+- **Backend:** Node.js, Express.js, MongoDB
+- **Frontend:** React, Redux
+- **DevOps:** Docker, Kubernetes
+- **Authentication & Security:** JWT, bcrypt, Role-Based Access Control (RBAC)
+- **API Documentation:** Swagger (OpenAPI)
+- **Messaging & Notifications:** Twilio (SMS), Nodemailer (Email)
 
-## Setup
-1. Clone the repository:
+---
 
-```
+## Setup Instructions
+
+###  1. Clone the Repository
+
+```sh
 git clone https://github.com/YOUR-USERNAME/Food-Delivery-Microservices.git
+cd Food-Delivery-Microservices
 
 ```
-2. Install dependencies for each microservice:
+###  2. Install dependencies for each microservice
+  Each microservice is an independent Node.js application, so you need to install dependencies separately.
 
 ```
-cd backend/auth-service npm install
-
+cd backend/service_name
+npm install
 ```
 
-## Contribution Guidelines
-1. Create a new branch:  
+###  3. Configure Environment Variables
+Each microservice requires a .env file. Create one inside each service directory:
+
+Example .env for auth-service:
 
 ```
-git checkout -b feature/auth-service
+PORT=5001
+MONGO_URI=mongodb://localhost:27017/authDB
+JWT_SECRET=your_secret_key
 
 ```
+Ensure that you create a .env file for each microservice and configure them properly.
 
-2. Make changes and commit:
+###  4.Run Each Microservice
+
+Start the authentication service:
 
 ```
-git commit -m "Implemented authentication"
+cd backend/auth-service
+npm start
 
 ```
-3. Push to GitHub and create a PR.
+Do the same for other services (order-service, restaurant-service, etc.).
+
+###  5. Run the Frontend
+
+```
+cd frontend
+npm install
+npm start
+```
+
 
