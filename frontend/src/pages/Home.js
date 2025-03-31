@@ -110,24 +110,6 @@ function Home() {
             </div>
           </motion.div>
         </section>
-
-        {/* Call-to-Action Section */}
-        <section className="cta-section">
-          <motion.h2 
-            initial={{ opacity: 0, scale: 0.8 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.8 }}
-          >
-            Order Now & Satisfy Your Cravings!
-          </motion.h2>
-          <motion.a 
-            href="/menu" 
-            className="cta-button"
-            whileHover={{ scale: 1.1, brightness: 1.2 }}
-          >
-            Order Now
-          </motion.a>
-        </section>
       </main>
 
       <Footer />
