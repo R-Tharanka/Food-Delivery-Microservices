@@ -50,8 +50,9 @@
   gap: 1rem;
 }
 
+/* Updated the background color of login and signup buttons to black */
 .login-button, .signup-button {
-  background-color: var(--color-black);
+  background-color: var(--color-black); /* Changed to black */
   color: var(--color-white);
   border: none;
   padding: 0.5rem 1rem;

@@ -5,6 +5,7 @@ import Checkout from "./pages/Checkout";
 import Home from "./pages/Home";
 import About from "./pages/About";
 import PrivacyPolicy from "./pages/PrivacyPolicy";
+import ContactAndFeedback from "./pages/ContactAndFeedback";
 
 function App() {
   return (
@@ -14,6 +15,7 @@ function App() {
         <Route path="/checkout" element={<Checkout />} />
         <Route path="/about" element={<About />} />
         <Route path="/privacy" element={<PrivacyPolicy />} />
+        <Route path="/contact" element={<ContactAndFeedback />} />
       </Routes>
     </Router>
   );
