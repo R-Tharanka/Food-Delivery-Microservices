@@ -127,16 +127,65 @@
   padding: 0 10px; /* Added padding for better spacing */
 }
 
+/* Updated styles for the how-it-works section to display steps in a horizontal flow */
 .how-it-works {
-  padding: 20px; /* Added padding for how-it-works section */
+  padding: 40px 20px; /* Increased padding for better spacing */
+  background-color: var(--color-light-gray); /* Added background color */
+  text-align: center; /* Center align text */
 }
 
-.how-it-works .step img {
+.how-it-works h2 {
+  font-size: 2rem;
+  color: var(--color-black);
+  margin-bottom: 20px; /* Added spacing below the heading */
+}
+
+.how-it-works .steps {
+  display: flex;
+  flex-wrap: wrap; /* Allow wrapping for smaller screens */
+  justify-content: center; /* Center align the steps */
+  gap: 20px; /* Added gap between steps */
+}
+
+.how-it-works .step {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 200px; /* Fixed width for uniformity */
+  background-color: var(--color-white);
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Added shadow for depth */
+  padding: 20px; /* Added padding inside each step */
+  transition: transform 0.3s ease, box-shadow 0.3s ease; /* Smooth hover effect */
+}
+
+.how-it-works .step:hover {
+  transform: translateY(-10px); /* Lift step on hover */
+  box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15); /* Enhance shadow on hover */
+}
+
+.how-it-works .step .step-icon {
   width: 80px;
   height: 80px;
-  border-radius: 50%;
-  object-fit: cover;
   margin-bottom: 10px;
+}
+
+.how-it-works .step .step-icon img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.how-it-works .step .step-title {
+  font-size: 1.2rem;
+  color: var(--color-black);
+  margin-bottom: 10px;
+}
+
+.how-it-works .step .step-description {
+  font-size: 0.9rem;
+  color: var(--color-gray);
+  text-align: center;
 }
 
 .testimonials {

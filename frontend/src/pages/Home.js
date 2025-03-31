@@ -9,10 +9,10 @@ import burgerImage from "../assets/images/burgers.jpg";
 import pizzaImage from "../assets/images/pizzas.png";
 import sushiImage from "../assets/images/sushi.jpg";
 import dessertImage from "../assets/images/desserts.png";
-import step1Icon from "../assets/images/sushi.jpg";
-import step2Icon from "../assets/images/sushi.jpg";
-import step3Icon from "../assets/images/sushi.jpg";
-import step4Icon from "../assets/images/sushi.jpg";
+import step1Icon from "../assets/images/menu.png";
+import step2Icon from "../assets/images/order.png";
+import step3Icon from "../assets/images/track.png";
+import step4Icon from "../assets/images/meal.png";
 import user1Image from "../assets/images/sushi.jpg";
 
 function Home() {
@@ -71,22 +71,20 @@ function Home() {
         <section className="how-it-works">
           <h2>How It Works</h2>
           <div className="steps">
-            {[
-              { step: 'Browse Menu', icon: step1Icon },
-              { step: 'Order', icon: step2Icon },
-              { step: 'Track', icon: step3Icon },
-              { step: 'Enjoy!', icon: step4Icon }
-            ].map((item, index) => (
-              <motion.div 
-                key={index} 
-                className="step"
-                initial={{ opacity: 0, x: -50 }}
-                whileInView={{ opacity: 1, x: 0 }}
+            {[{ step: 'Browse Menu', icon: step1Icon }, { step: 'Order', icon: step2Icon }, { step: 'Track', icon: step3Icon }, { step: 'Enjoy!', icon: step4Icon }].map((item, index) => (
+              <motion.div
+                key={index}
+                className="step redesigned-step"
+                initial={{ opacity: 0, y: 50 }}
+                whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.5, delay: index * 0.2 }}
               >
-                <img src={item.icon} alt={item.step} />
-                <p>{item.step}</p>
+                <div className="step-icon redesigned-step-icon">
+                  <img src={item.icon} alt={item.step} />
+                </div>
+                <h3 className="step-title">{item.step}</h3>
+                <p className="step-description">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin vel nisi id odio tincidunt facilisis.</p>
               </motion.div>
             ))}
           </div>
