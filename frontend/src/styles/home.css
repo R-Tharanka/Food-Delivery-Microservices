@@ -140,7 +140,7 @@
   margin-bottom: 20px; /* Added spacing below the heading */
 }
 
-/* Added vertical lines to connect each step in the horizontal flow layout */
+/* Adjusted the horizontal line to appear after all cards are visible */
 .how-it-works .steps {
   display: flex;
   flex-wrap: wrap; /* Allow wrapping for smaller screens */
@@ -158,6 +158,13 @@
   height: 2px; /* Thickness of the line */
   background-color: var(--color-black); /* Line color */
   z-index: 0; /* Place the line behind the steps */
+  opacity: 0; /* Initially hide the line */
+  transition: opacity 0.5s ease, width 2s ease; /* Smooth transition for line appearance */
+}
+
+.how-it-works .steps.appear-line::before {
+  opacity: 1; /* Show the line */
+  width: 100%; /* Expand the line from left to right */
 }
 
 /* Added step numbers to the top-left corner of each step card */

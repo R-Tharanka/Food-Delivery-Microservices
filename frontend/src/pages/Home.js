@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
@@ -16,6 +16,16 @@ import step4Icon from "../assets/images/meal.png";
 import user1Image from "../assets/images/sushi.jpg";
 
 function Home() {
+  const [lineVisible, setLineVisible] = useState(false);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setLineVisible(true);
+    }, 1500); // Delay to ensure all cards are visible
+
+    return () => clearTimeout(timer);
+  }, []);
+
   return (
     <div className="home-container">
       <Header />
@@ -70,7 +80,7 @@ function Home() {
         {/* How It Works Section */}
         <section className="how-it-works">
           <h2>How It Works</h2>
-          <div className="steps">
+          <div className={`steps ${lineVisible ? "appear-line" : ""}`}>
             {[{ step: 'Browse Menu', icon: step1Icon }, { step: 'Order', icon: step2Icon }, { step: 'Track', icon: step3Icon }, { step: 'Enjoy!', icon: step4Icon }].map((item, index) => (
               <motion.div
                 key={index}
