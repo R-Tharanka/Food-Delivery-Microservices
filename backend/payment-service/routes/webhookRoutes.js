@@ -4,53 +4,58 @@ const Payment = require("../models/PaymentModel");
 const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
 require("dotenv").config();
 
+// Use raw body (without JSON parsing) for webhook verification.
 router.post("/", express.raw({ type: "application/json" }), async (req, res) => {
+  console.log("🔔 Webhook received");
   const sig = req.headers["stripe-signature"];
   let event;
 
   try {
     event = stripe.webhooks.constructEvent(req.body, sig, process.env.STRIPE_WEBHOOK_SECRET);
-    console.log("✅ Webhook event received:", event.type);
+    console.log("✅ Webhook event verified:", event.type);
   } catch (err) {
     console.error("❌ Webhook signature verification failed:", err.message);
     return res.status(400).send(`Webhook Error: ${err.message}`);
   }
 
-  const paymentIntent = event.data.object;
-
-  // Ensure metadata exists and contains orderId
-  const orderId = paymentIntent.metadata?.orderId;
-  if (!orderId) {
-    console.error("❌ Missing orderId in PaymentIntent metadata.");
-    return res.status(400).json({ error: "Invalid PaymentIntent metadata" });
+  // Determine the PaymentIntent id to look up
+  let paymentIntentId = null;
+  if (event.type === "payment_intent.succeeded" || event.type === "payment_intent.payment_failed") {
+    paymentIntentId = event.data.object.id;
+  } else if (event.type === "charge.succeeded") {
+    // For a charge event, get the PaymentIntent id from charge.payment_intent.
+    paymentIntentId = event.data.object.payment_intent;
+  } else {
+    console.log(`ℹ️ Unhandled event type: ${event.type}`);
+    return res.json({ received: true });
   }
 
   try {
-    const existingPayment = await Payment.findOne({ orderId });
-    if (!existingPayment) {
-      console.warn(`⚠️ Payment record for order ${orderId} not found.`);
+    // Look up the Payment record by the PaymentIntent id.
+    let payment = await Payment.findOne({ stripePaymentIntentId: paymentIntentId });
+    if (!payment) {
+      console.warn(`⚠️ Payment record for PaymentIntent ${paymentIntentId} not found.`);
       return res.status(404).json({ error: "Payment record not found" });
     }
+    console.log(`ℹ️ Found payment record for order ${payment.orderId}, current status: ${payment.status}`);
 
-    console.log(`ℹ️ Existing payment record found:`, existingPayment);
-
-    // Update payment status based on the webhook event.
-    if (event.type === "payment_intent.succeeded" && existingPayment.status !== "Paid") {
-      existingPayment.status = "Paid";
-      await existingPayment.save();
-      console.log(`✅ Payment for Order ${orderId} marked as Paid.`);
-    } else if (event.type === "payment_intent.payment_failed" && existingPayment.status !== "Failed") {
-      existingPayment.status = "Failed";
-      await existingPayment.save();
-      console.log(`❌ Payment for Order ${orderId} marked as Failed.`);
+    // Update the payment status based on the event type.
+    if ((event.type === "payment_intent.succeeded" || event.type === "charge.succeeded") && payment.status !== "Paid") {
+      payment.status = "Paid";
+      await payment.save();
+      console.log(`✅ Payment for Order ${payment.orderId} updated to Paid.`);
+    } else if (event.type === "payment_intent.payment_failed" && payment.status !== "Failed") {
+      payment.status = "Failed";
+      await payment.save();
+      console.log(`❌ Payment for Order ${payment.orderId} updated to Failed.`);
     } else {
-      console.log(`ℹ️ Payment status for Order ${orderId} is already updated. Ignoring duplicate webhook.`);
+      console.log(`ℹ️ Payment for Order ${payment.orderId} already updated to ${payment.status}.`);
     }
   } catch (err) {
     console.error("❌ Error updating payment status in DB:", err.message);
     return res.status(500).json({ error: "Database update failed" });
   }
-
+  
   res.json({ received: true });
 });
 

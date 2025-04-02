@@ -16,9 +16,11 @@ const CheckoutForm = () => {
   const [cardType, setCardType] = useState("");
   const [disablePayment, setDisablePayment] = useState(false);
 
-  // Example order data – in production, this should come from your Order Service
+  const API_BASE_URL = "http://localhost:5004";
+
+  // Example order data – in production this comes dynamically from your Order Service.
   const orderData = {
-    orderId: "ORDER834388",
+    orderId: "ORDER0000039",
     userId: "USER67890",
     amount: 48,
     currency: "usd",
@@ -34,7 +36,7 @@ const CheckoutForm = () => {
 
   const createPaymentIntent = async () => {
     try {
-      const response = await axios.post("http://localhost:5004/api/payment/process", orderData);
+      const response = await axios.post(`${API_BASE_URL}/api/payment/process`, orderData);
       console.log("Response from payment API:", response.data);
       
       if (response.data.paymentStatus === "Paid" || response.data.disablePayment) {
@@ -126,21 +128,17 @@ const CheckoutForm = () => {
           <CardNumberElement className="stripe-input" onChange={handleCardChange} />
           {cardType && <span className={`card-icon ${cardType}`}></span>}
         </div>
-
         <div className="input-group">
           <label>Expiry Date</label>
           <CardExpiryElement className="stripe-input" onChange={handleCardChange} />
         </div>
-
         <div className="input-group">
           <label>CVC</label>
           <CardCvcElement className="stripe-input" onChange={handleCardChange} />
         </div>
-
         <button type="submit" disabled={!stripe || loading || disablePayment} className="checkout-btn">
           {loading ? <span className="spinner"></span> : "Pay"}
         </button>
-
         {error && <div className="checkout-error">{error}</div>}
         {message && <div className="checkout-success">{message}</div>}
       </form>
