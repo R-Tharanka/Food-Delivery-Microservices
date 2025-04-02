@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { motion } from "framer-motion";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
@@ -16,16 +16,6 @@ import step4Icon from "../assets/images/meal.png";
 import user1Image from "../assets/images/sushi.jpg";
 
 function Home() {
-  const [lineVisible, setLineVisible] = useState(false);
-
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setLineVisible(true);
-    }, 1500); // Delay to ensure all cards are visible
-
-    return () => clearTimeout(timer);
-  }, []);
-
   return (
     <div className="home-container">
       <Header />
@@ -55,12 +45,7 @@ function Home() {
         <section className="featured-categories">
           <h2>Popular Categories</h2>
           <div className="categories-grid">
-            {[
-              { name: 'Burgers', image: burgerImage },
-              { name: 'Pizzas', image: pizzaImage },
-              { name: 'Sushi', image: sushiImage },
-              { name: 'Desserts', image: dessertImage }
-            ].map((category, index) => (
+            {[{ name: 'Burgers', image: burgerImage }, { name: 'Pizzas', image: pizzaImage }, { name: 'Sushi', image: sushiImage }, { name: 'Desserts', image: dessertImage }].map((category, index) => (
               <motion.div 
                 key={index} 
                 className="category-card"
@@ -80,23 +65,27 @@ function Home() {
         {/* How It Works Section */}
         <section className="how-it-works">
           <h2>How It Works</h2>
-          <div className={`steps ${lineVisible ? "appear-line" : ""}`}>
-            {[{ step: 'Browse Menu', icon: step1Icon }, { step: 'Order', icon: step2Icon }, { step: 'Track', icon: step3Icon }, { step: 'Enjoy!', icon: step4Icon }].map((item, index) => (
-              <motion.div
-                key={index}
-                className="step redesigned-step"
-                data-step={index + 1} /* Added data-step attribute for step numbers */
-                initial={{ opacity: 0, y: 50 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.5, delay: index * 0.2 }}
-              >
-                <div className="step-icon redesigned-step-icon">
-                  <img src={item.icon} alt={item.step} />
-                </div>
-                <h3 className="step-title">{item.step}</h3>
-                <p className="step-description">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin vel nisi id odio tincidunt facilisis.</p>
-              </motion.div>
+          <div className="steps">
+            {[{ step: 'Browse Menu', icon: step1Icon }, { step: 'Order', icon: step2Icon }, { step: 'Track', icon: step3Icon }, { step: 'Enjoy!', icon: step4Icon }].map((item, index, array) => (
+              <React.Fragment key={index}>
+                <motion.div
+                  className="step redesigned-step"
+                  data-step={index + 1} /* Added data-step attribute for step numbers */
+                  initial={{ opacity: 0, y: 50 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.5, delay: index * 0.2 }}
+                >
+                  <div className="step-icon redesigned-step-icon">
+                    <img src={item.icon} alt={item.step} />
+                  </div>
+                  <h3 className="step-title">{item.step}</h3>
+                  <p className="step-description">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin vel nisi id odio tincidunt facilisis.</p>
+                </motion.div>
+                {index < array.length - 1 && (
+                  <div className="arrow" /> /* Render arrow between steps */
+                )}
+              </React.Fragment>
             ))}
           </div>
         </section>
