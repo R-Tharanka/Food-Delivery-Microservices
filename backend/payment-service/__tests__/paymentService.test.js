@@ -70,13 +70,16 @@ jest.mock('stripe', () => {
     }));
 });
 
-jest.mock('../models/PaymentModel', () => ({
-    findOneAndUpdate: jest.fn().mockResolvedValue({
+jest.mock('../models/PaymentModel', () => {
+    const mockPayment = jest.fn();
+    mockPayment.findOneAndUpdate = jest.fn().mockResolvedValue({
         stripePaymentIntentId: null,
-        save: jest.fn(),
-    }),
-    findOne: jest.fn().mockResolvedValue({
+        save: jest.fn().mockResolvedValue({}),
+    });
+    mockPayment.findOne = jest.fn().mockResolvedValue({
         status: 'Pending',
-        save: jest.fn(),
-    }),
-}));
+        save: jest.fn().mockResolvedValue({}),
+    });
+    mockPayment.prototype.save = jest.fn().mockResolvedValue({}); // Mock the save method for new instances
+    return mockPayment;
+});

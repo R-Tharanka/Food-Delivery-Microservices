@@ -44,10 +44,12 @@ app.use("/api/payment", paymentRoutes);
 app.get("/", (req, res) => res.send("Payment Service Running"));
 
 const PORT = process.env.PORT || 5004;
-app.listen(PORT, () => {
-  console.log(`🚀 Payment Service running on port ${PORT}`);
-  console.log(`🌍 API Base URL: http://localhost:${PORT}`);
-  console.log(`📖 Swagger API Docs: http://localhost:${PORT}/api-docs`);
-});
+if (process.env.NODE_ENV !== 'test') {
+  app.listen(PORT, () => {
+    console.log(`🚀 Payment Service running on port ${PORT}`);
+    console.log(`🌍 API Base URL: http://localhost:${PORT}`);
+    console.log(`📖 Swagger API Docs: http://localhost:${PORT}/api-docs`);
+  });
+}
 
 module.exports = app;
