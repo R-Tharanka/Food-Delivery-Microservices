@@ -1,52 +1,35 @@
 const express = require("express");
-const axios = require("axios");
 const router = express.Router();
-
 const Payment = require("../models/PaymentModel");
 const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
-
 require("dotenv").config();
 
 router.post("/process", async (req, res) => {
   try {
     const { orderId, userId, amount, currency, email } = req.body;
-
-    // Atomically find a payment record or create one with stripePaymentIntentId set to null.
-    let payment = await Payment.findOneAndUpdate(
-      { orderId },
-      {
-        $setOnInsert: {
-          orderId,
-          userId,
-          amount,
-          currency: currency || "usd",
-          status: "Pending",
-          stripePaymentIntentId: null,
-        },
-      },
-      { new: true, upsert: true }
-    );
-
-    // If the payment record already has a client secret, then a PaymentIntent was already created.
-    if (payment.stripePaymentIntentId) {
-      console.log("Existing Payment Found:", payment);
+    
+    console.log(`⏳ Processing payment request for order ${orderId}`);
+    
+    // Check if a payment record already exists for this order.
+    let payment = await Payment.findOne({ orderId });
+    if (payment && payment.stripeClientSecret) {
+      console.log("🔍 Existing Payment Found:", payment);
       if (payment.status === "Paid") {
         return res.status(200).json({
           message: "✅ This order has already been paid successfully.",
           paymentStatus: "Paid",
           disablePayment: true,
         });
-      } else {
-        // Pending payment: return the existing client secret.
-        return res.json({
-          clientSecret: payment.stripePaymentIntentId,
-          paymentId: payment._id,
-          disablePayment: false,
-        });
       }
+      // Return the existing client secret for a pending payment.
+      return res.json({
+        clientSecret: payment.stripeClientSecret,
+        paymentId: payment._id,
+        disablePayment: false,
+      });
     }
-
-    // Otherwise, no PaymentIntent exists—create a new one.
+    
+    // Create a new PaymentIntent.
     const amountInCents = Math.round(parseFloat(amount) * 100);
     const paymentIntent = await stripe.paymentIntents.create({
       amount: amountInCents,
@@ -54,19 +37,47 @@ router.post("/process", async (req, res) => {
       metadata: { orderId, userId },
       receipt_email: email,
     });
-    console.log("Created PaymentIntent:", paymentIntent);
-
-    // Update the payment record with the PaymentIntent client secret.
-    payment.stripePaymentIntentId = paymentIntent.client_secret;
+    console.log("✅ Created PaymentIntent:", paymentIntent);
+    
+    // Create a new Payment record.
+    payment = new Payment({
+      orderId,
+      userId,
+      amount,
+      currency: currency || "usd",
+      status: "Pending",
+      stripePaymentIntentId: paymentIntent.id, // store only the id (without secret)
+      stripeClientSecret: paymentIntent.client_secret, // store client secret for frontend
+    });
     await payment.save();
-    console.log("Stored Client Secret:", payment.stripePaymentIntentId);
-
+    console.log("💾 Stored Payment Record:", payment);
+    
     return res.json({
       clientSecret: paymentIntent.client_secret,
       paymentId: payment._id,
       disablePayment: false,
     });
   } catch (error) {
+    // If duplicate key error occurs, recover gracefully.
+    if (error.code === 11000) {
+      let existingPayment = await Payment.findOne({ orderId: req.body.orderId });
+      if (existingPayment) {
+        console.log("⚠️ Duplicate detected; returning existing payment:", existingPayment);
+        if (existingPayment.status === "Paid") {
+          return res.status(200).json({
+            message: "✅ This order has already been paid successfully.",
+            paymentStatus: "Paid",
+            disablePayment: true,
+          });
+        }
+        return res.json({
+          clientSecret: existingPayment.stripeClientSecret,
+          paymentId: existingPayment._id,
+          disablePayment: false,
+        });
+      }
+      return res.status(500).json({ error: "Duplicate key error but no payment record found." });
+    }
     console.error("❌ Stripe Payment processing error:", error.message);
     res.status(500).json({ error: "❌ Payment processing failed. Please try again." });
   }

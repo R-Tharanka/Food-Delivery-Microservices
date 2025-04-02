@@ -16,14 +16,14 @@ const app = express();
 // Enable CORS for your frontend
 app.use(cors({ origin: "http://localhost:3000" }));
 
-// Webhook route (must receive raw body)
+// IMPORTANT: Mount the webhook route with raw body parsing BEFORE JSON parser middleware.
 app.use("/api/payment/webhook", express.raw({ type: "application/json" }), webhookRoutes);
 
 // JSON parser for all other routes
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// Swagger Configuration
+// Swagger Configuration (optional)
 const swaggerOptions = {
   definition: {
     openapi: "3.0.0",
@@ -35,24 +35,19 @@ const swaggerOptions = {
   },
   apis: ["./routes/*.js"],
 };
-
 const swaggerDocs = swaggerJsDoc(swaggerOptions);
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocs));
 
-// Define API routes
+// Mount payment routes
 app.use("/api/payment", paymentRoutes);
 
-// Test Route
 app.get("/", (req, res) => res.send("Payment Service Running"));
 
-// Start Server
-if (process.env.NODE_ENV !== 'test') {
-  const PORT = process.env.PORT || 5004;
-  app.listen(PORT, () => {
-    console.log(`🚀 Payment Service running on port ${PORT}`);
-    console.log(`🌍 API Base URL: http://localhost:${PORT}`);
-    console.log(`📖 Swagger API Docs: http://localhost:${PORT}/api-docs`);
-  });
-}
+const PORT = process.env.PORT || 5004;
+app.listen(PORT, () => {
+  console.log(`🚀 Payment Service running on port ${PORT}`);
+  console.log(`🌍 API Base URL: http://localhost:${PORT}`);
+  console.log(`📖 Swagger API Docs: http://localhost:${PORT}/api-docs`);
+});
 
-module.exports = app; // Export the app for testing
+module.exports = app;
