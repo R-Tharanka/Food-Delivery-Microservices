@@ -20,14 +20,14 @@ const CheckoutForm = () => {
 
   // Example order data – in production this comes dynamically from your Order Service.
   const orderData = {
-    orderId: "ORDER0000039",
+    orderId: "ORDER00000011",
     userId: "USER67890",
     amount: 48,
     currency: "usd",
     firstName: "John",
     lastName: "Doe",
-    email: "johndoe@example.com",
-    phone: "0771234567",
+    email: "tharankaruchira18@gmail.com",
+    phone: "+94752504856", // Ensure phone is included
   };
 
   useEffect(() => {
