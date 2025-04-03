@@ -6,7 +6,7 @@ require("dotenv").config();
 
 router.post("/process", async (req, res) => {
   try {
-    const { orderId, userId, amount, currency, email } = req.body;
+    const { orderId, userId, amount, currency, email, phone } = req.body; // Include phone in destructuring
     
     console.log(`⏳ Processing payment request for order ${orderId}`);
     
@@ -48,6 +48,7 @@ router.post("/process", async (req, res) => {
       status: "Pending",
       stripePaymentIntentId: paymentIntent.id, // store only the id (without secret)
       stripeClientSecret: paymentIntent.client_secret, // store client secret for frontend
+      phone, // Add phone to the payment record
     });
     await payment.save();
     console.log("💾 Stored Payment Record:", payment);
