@@ -15,12 +15,13 @@ const resend = new Resend(process.env.RESEND_API_KEY);
 const sendEmailNotification = async (to, subject, html, text) => {
   try {
     const data = await resend.emails.send({
-      from: "fullstack.services24@gmail.com", // Use a verified sender email from your Resend account
+      from: "SkyDish <onboarding@resend.dev>", // ✅ Valid test sender for Resend
       to,
       subject,
       html,
     });
-    console.log(`📧 Email sent to ${to}: ${data.id}`);
+    console.log("Resend API Response:", data);
+    console.log(`📧 Email sent to ${to}: ${data?.id || "No ID returned"}`);
     return data;
   } catch (error) {
     console.error("❌ Error sending email:", error.message);
