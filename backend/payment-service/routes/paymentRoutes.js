@@ -55,6 +55,7 @@ router.post("/process", async (req, res) => {
       stripePaymentIntentId: paymentIntent.id, // store only the id (without secret)
       stripeClientSecret: paymentIntent.client_secret, // store client secret for frontend
       phone, // Use `phone` to match the schema
+      email,
     });
     await payment.save();
     console.log("💾 Stored Payment Record:", payment);

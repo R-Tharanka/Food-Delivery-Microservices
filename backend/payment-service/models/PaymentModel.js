@@ -10,6 +10,7 @@ const PaymentSchema = new mongoose.Schema({
     enum: ["Pending", "Paid", "Failed"],
     default: "Pending",
   },
+  email: { type: String, required: true },
   phone: { type: String, required: true },
   // Save the PaymentIntent id (e.g. "pi_3R9OXlD3879aJGnP0xfO1oMm")
   stripePaymentIntentId: { type: String, unique: true, sparse: true },
