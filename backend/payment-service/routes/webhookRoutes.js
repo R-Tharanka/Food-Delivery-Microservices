@@ -3,6 +3,7 @@ const router = express.Router();
 const Payment = require("../models/PaymentModel");
 const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
 const { sendSmsNotification } = require("../utils/twilioService");
+const { sendEmailNotification } = require("../utils/emailService"); // Import the email service
 require("dotenv").config();
 
 router.post("/", express.raw({ type: "application/json" }), async (req, res) => {
@@ -28,8 +29,6 @@ router.post("/", express.raw({ type: "application/json" }), async (req, res) => 
         return res.json({ received: true });
     }
 
-    console.log("🔍 Full webhook event data:", JSON.stringify(event, null, 2));
-
     // Extract orderId from metadata
     const orderId = event.data.object.metadata?.orderId;
     if (!orderId) {
@@ -40,57 +39,95 @@ router.post("/", express.raw({ type: "application/json" }), async (req, res) => 
     try {
         let payment = null;
 
-        // If orderId exists, prioritize searching by it
         if (orderId) {
             payment = await Payment.findOne({ orderId });
         }
-        // If no payment found, fallback to paymentIntentId
         if (!payment) {
             payment = await Payment.findOne({ stripePaymentIntentId: paymentIntentId });
         }
-
         if (!payment) {
             console.warn(`⚠️ No payment record found for orderId: ${orderId} or PaymentIntent: ${paymentIntentId}`);
             return res.status(404).json({ error: "Payment record not found" });
         }
-
         console.log(`ℹ️ Found payment record for order ${payment.orderId}, current status: ${payment.status}`);
 
-        const customerPhone = payment.phone; // Ensure phone exists in the model
+        const customerPhone = payment.phone;
+        const customerEmail = payment.email; // Ensure your Payment model includes an email field (if not, add it)
+
         if (!customerPhone) {
             console.warn(`⚠️ No phone number associated with Order ${payment.orderId}`);
         }
 
-        // Update payment status and send SMS notification
         if ((event.type === "payment_intent.succeeded" || event.type === "charge.succeeded") && payment.status !== "Paid") {
             payment.status = "Paid";
             await payment.save();
             console.log(`✅ Payment for Order ${payment.orderId} updated to Paid.`);
 
+            // Send SMS notification (if phone exists)
             if (customerPhone) {
-              //msg
-                const message = `Your payment for Order ${payment.orderId} was successful!`;
+                const smsMessage = `Your payment for Order ${payment.orderId} was successful!`;
                 try {
-                    await sendSmsNotification(customerPhone, message);
+                    await sendSmsNotification(customerPhone, smsMessage);
                 } catch (smsError) {
                     console.error(`❌ Twilio SMS error: ${smsError.message}`);
                 }
             }
 
+            // Send Email notification (if email exists)
+            if (customerEmail) {
+                const emailSubject = "Payment Confirmation for Your Order";
+                const emailHtml = ` <div style="font-family: Arial, sans-serif; max-width: 600px; margin: auto; padding: 24px; background-color: #f9f9f9; border-radius: 8px; box-shadow: 0 2px 6px rgba(0,0,0,0.05);">
+                                        <h2 style="color: #333;">Payment Confirmation</h2>
+
+                                        <p style="color: #555; font-size: 16px;">Dear Customer,</p>
+
+                                        <p style="color: #555; font-size: 16px;">
+                                            We’re happy to let you know that your payment for <strong style="color: #333;">Order #${payment.orderId}</strong> was successfully processed.
+                                        </p>
+
+                                        <div style="margin: 24px 0; padding: 16px; background-color: #ffffff; border: 1px solid #ddd; border-radius: 6px;">
+                                            <p style="margin: 0; font-size: 16px;"><strong>Amount:</strong> $${payment.amount.toFixed(2)} ${payment.currency?.toUpperCase()}</p>
+                                            <p style="margin: 0; font-size: 16px;"><strong>Status:</strong> ${payment.status}</p>
+                                            <p style="margin: 0; font-size: 16px;"><strong>Date:</strong> ${new Date(payment.createdAt).toLocaleString()}</p>
+                                        </div>
+
+                                        <p style="color: #555; font-size: 16px;">Thank you for choosing our service. If you have any questions, feel free to reply to this email.</p>
+
+                                        <p style="margin-top: 32px; color: #888; font-size: 14px;">— SkyDish Food Delivery Team</p>
+                                    </div>
+                                    `;
+                const emailText = `Dear Customer, Your payment for Order ${payment.orderId} was successful! Thank you for your order.`;
+                try {
+                    await sendEmailNotification(customerEmail, emailSubject, emailHtml, emailText);
+                } catch (emailError) {
+                    console.error(`❌ Email sending error: ${emailError.message}`);
+                }
+            }
         } else if (event.type === "payment_intent.payment_failed" && payment.status !== "Failed") {
             payment.status = "Failed";
             await payment.save();
             console.log(`❌ Payment for Order ${payment.orderId} updated to Failed.`);
 
             if (customerPhone) {
-                const message = `Your payment for Order ${payment.orderId} failed. Please try again. ❌`;
+                const smsMessage = `Your payment for Order ${payment.orderId} failed. Please try again. ❌`;
                 try {
-                    await sendSmsNotification(customerPhone, message);
+                    await sendSmsNotification(customerPhone, smsMessage);
                 } catch (smsError) {
                     console.error(`❌ Twilio SMS error: ${smsError.message}`);
                 }
             }
 
+            if (customerEmail) {
+                const emailSubject = "Payment Failure for Your Order";
+                const emailHtml = `<p>Dear Customer,</p>
+                           <p>Unfortunately, your payment for Order <strong>${payment.orderId}</strong> failed. Please try again.</p>`;
+                const emailText = `Dear Customer, your payment for Order ${payment.orderId} failed. Please try again.`;
+                try {
+                    await sendEmailNotification(customerEmail, emailSubject, emailHtml, emailText);
+                } catch (emailError) {
+                    console.error(`❌ Email sending error: ${emailError.message}`);
+                }
+            }
         } else {
             console.log(`ℹ️ Payment for Order ${payment.orderId} already updated to ${payment.status}.`);
         }
