@@ -29,4 +29,4 @@ const sendEmailNotification = async (to, subject, html, text) => {
   }
 };
 
-module.exports = { sendEmailNotification }; 
+module.exports = { sendEmailNotification };  
