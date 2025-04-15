@@ -7,7 +7,7 @@ services:
     ports:
       - "5004:5004"
     environment:
-      - MONGO_URI=mongodb://mongo:27017/paymentDB
+      - MONGO_URI=mongodb+srv://ruchiratharanka1:RcEmtBYx2yVS5ArE@payment.up910vz.mongodb.net/?retryWrites=true&w=majority&appName=payment
       - STRIPE_SECRET_KEY=${STRIPE_SECRET_KEY}
       - STRIPE_WEBHOOK_SECRET=${STRIPE_WEBHOOK_SECRET}
       - TWILIO_ACCOUNT_SID=${TWILIO_ACCOUNT_SID}

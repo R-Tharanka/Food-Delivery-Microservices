@@ -22,7 +22,10 @@ spec:
             - containerPort: 5004
           env:
             - name: MONGO_URI
-              value: "mongodb://mongo:27017/paymentDB"
+              valueFrom:
+                secretKeyRef:
+                  name: payment-service-secrets
+                  key: MONGO_URI
             - name: STRIPE_SECRET_KEY
               valueFrom:
                 secretKeyRef:
