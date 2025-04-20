@@ -1,14 +1,6 @@
 version: "3.8"
 
 services:
-  mongo:
-    image: mongo:5.0
-    container_name: payment-mongo
-    restart: unless-stopped
-    ports:
-      - "27017:27017"
-    volumes:
-      - mongo-data:/data/db
 
   payment-service:
     build:
@@ -20,7 +12,8 @@ services:
       - "5004:5004"
     environment:
       # In local dev we point at our local mongo container:
-      - MONGO_URI=mongodb://mongo:27017/Payment
+      - MONGO_URI=${MONGO_URI}
+      # - MONGO_URI=mongodb://mongo:27017/Payment
       - PORT=5004
       - JWT_SECRET=${JWT_SECRET}
 
@@ -32,8 +25,3 @@ services:
       - TWILIO_PHONE_NUMBER=${TWILIO_PHONE_NUMBER}
 
       - RESEND_API_KEY=${RESEND_API_KEY}
-    depends_on:
-      - mongo
-
-volumes:
-  mongo-data:

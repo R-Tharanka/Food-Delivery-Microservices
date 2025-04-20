@@ -20,7 +20,7 @@ const CheckoutForm = () => {
 
   // Example order data – in production this comes dynamically from your Order Service.
   const orderData = {
-    orderId: "ORDER00032",
+    orderId: "ORDER00036",
     userId: "USER67890",
     amount: 43,
     currency: "usd",
