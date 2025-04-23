@@ -20,14 +20,14 @@ const CheckoutForm = () => {
 
   // Example order data – in production this comes dynamically from your Order Service.
   const orderData = {
-    orderId: "ORDER00000025",
+    orderId: "ORDER00036",
     userId: "USER67890",
-    amount: 48,
+    amount: 43,
     currency: "usd",
     firstName: "John",
     lastName: "Doe",
     email: "tharankaruchira18@gmail.com",
-    phone: "+94752504856", // Ensure phone is included
+    phone: "+94752504856",
   };
 
   useEffect(() => {
@@ -38,13 +38,13 @@ const CheckoutForm = () => {
     try {
       const response = await axios.post(`${API_BASE_URL}/api/payment/process`, orderData);
       console.log("Response from payment API:", response.data);
-      
+
       if (response.data.paymentStatus === "Paid" || response.data.disablePayment) {
         setMessage("✅ This order has already been paid successfully.");
         setDisablePayment(true);
         return;
       }
-      
+
       if (response.data.clientSecret) {
         setClientSecret(response.data.clientSecret);
       } else {
