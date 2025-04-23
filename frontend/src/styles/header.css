@@ -1,0 +1,68 @@
+@import './colors.css';
+
+/* Updated Header Styles */
+.home-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: var(--color-white);
+  color: var(--color-black);
+  padding: 1rem 2rem;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  transition: all 0.3s ease-in-out;
+}
+
+.header-left {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.hamburger-menu {
+  font-size: 1.5rem;
+  cursor: pointer;
+  transition: transform 0.3s;
+}
+
+.hamburger-menu:hover {
+  transform: scale(1.1);
+}
+
+.logo {
+  text-decoration: none; /* Remove underline */
+  color: inherit; /* Inherit text color */
+  font-size: 1.5rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: transform 0.3s;
+}
+
+.logo:hover {
+  transform: scale(1.1);
+}
+
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+/* Updated the background color of login and signup buttons to black */
+.login-button, .signup-button {
+  background-color: var(--color-black); /* Changed to black */
+  color: var(--color-white);
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: transform 0.3s, background-color 0.3s;
+}
+
+.login-button:hover, .signup-button:hover {
+  transform: scale(1.1);
+  background-color: var(--color-orange);
+}
