@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";  // Import Link for navigation
 import { FaEdit, FaTrashAlt, FaEye } from 'react-icons/fa';  // Import icons for Edit, Delete, and Show Details
 import axios from "axios";
 
-const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3ZTI1NjRiOTU5MjliOGYyNDhkOGEzMCIsInJvbGUiOiJjdXN0b21lciIsImlhdCI6MTc0MzA1OTkwOCwiZXhwIjoxNzQ1NjUxOTA4fQ.nHlIxPjdshWbMRihrny66MzbZI7HcOkrhNGNtKM3Rlk";
+const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3ZTI1NjRiOTU5MjliOGYyNDhkOGEzMCIsInJvbGUiOiJjdXN0b21lciIsImlhdCI6MTc0NDM1MDQ1MSwiZXhwIjoxNzQ2OTQyNDUxfQ.C85afR3WOuprjtjU2Kp1zF6W0eOwbWLExHZ0c5-Z2iY";
 
 function OrderHome({ handleDelete, handleEdit }) {
   const [orders, setOrders] = useState([]);
@@ -51,7 +51,7 @@ function OrderHome({ handleDelete, handleEdit }) {
 
   return (
     <div className="container" style={{ padding: "20px", backgroundColor: "#f8f9fa" }}>
-      <h1 style={{ textAlign: "center", marginBottom: "20px", color: "#333" }}>Order Management</h1>
+      <h1 style={{ textAlign: "center", marginBottom: "20px", color: "#333" }}>Place Your Order</h1>
 
       {/* Search Bar */}
       <Form.Group style={{ marginBottom: "20px" }}>

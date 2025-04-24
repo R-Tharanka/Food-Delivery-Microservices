@@ -2,21 +2,16 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate, useParams } from "react-router-dom";
 import { Button, Spinner } from "react-bootstrap";
+import { BsArrowLeft } from "react-icons/bs"; // Importing the left arrow icon from react-icons
 
 function DeleteOrder() {
   const [order, setOrder] = useState(null);
   const { id } = useParams(); // Get ID from URL
   const navigate = useNavigate();
-  const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3ZTI1NjRiOTU5MjliOGYyNDhkOGEzMCIsInJvbGUiOiJjdXN0b21lciIsImlhdCI6MTc0MzM0NzcyNCwiZXhwIjoxNzQ1OTM5NzI0fQ.PCcd_lcXB-CyLk2Cib3xl-eH5OCQQ_g3oVl-mA-a86w";
+  const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3ZTI1NjRiOTU5MjliOGYyNDhkOGEzMCIsInJvbGUiOiJjdXN0b21lciIsImlhdCI6MTc0NDM1MDQ1MSwiZXhwIjoxNzQ2OTQyNDUxfQ.C85afR3WOuprjtjU2Kp1zF6W0eOwbWLExHZ0c5-Z2iY";
 
   useEffect(() => {
-    // Log the order ID and token to ensure they are correct
-    console.log("Order ID:", id);
-    console.log("Authorization token:", token);
-   
-
     if (id) {
-      // Fetch order to confirm details before deleting
       axios.get(`http://localhost:5000/api/orders/${id}`, {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -36,14 +31,12 @@ function DeleteOrder() {
   }, [id]);
 
   const handleDelete = () => {
-    // Delete the order
     axios.delete(`http://localhost:5000/api/orders/${id}`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
     })
       .then((res) => {
-   
         navigate("/orders"); // Redirect to Home page after deletion
       })
       .catch((error) => {
@@ -60,28 +53,51 @@ function DeleteOrder() {
   );
 
   return (
-    <div className="container" style={containerStyle}>
-      <h2 style={headingStyle}>Delete Order</h2>
-      <p style={textStyle}>Are you sure you want to delete the following order?</p>
-      <ul style={orderDetailsStyle}>
-        <li><strong>Customer ID:</strong> {order.customerId}</li>
-        <li><strong>Restaurant ID:</strong> {order.restaurantId}</li>
-        <li><strong>Delivery Address:</strong> {order.deliveryAddress}</li>
-      </ul>
-      <div style={buttonContainerStyle}>
-        <Button variant="danger" onClick={handleDelete} style={deleteButtonStyle}>
-          Delete Order
-        </Button>
+    <div style={backgroundStyle}>
+      {/* Back Button with Icon */}
+      <Button
+        variant="link"
+        onClick={() => navigate("/orders")}
+        style={backButtonStyle}
+      >
+        <BsArrowLeft size={24} />
+      </Button>
+
+      <div className="container" style={cardContainerStyle}>
+        <h2 style={headingStyle}>Delete Order</h2>
+        <p style={textStyle}>Are you sure you want to delete the following order?</p>
+        <ul style={orderDetailsStyle}>
+          <li><strong>Customer ID:</strong> {order.customerId}</li>
+          <li><strong>Restaurant ID:</strong> {order.restaurantId}</li>
+          <li><strong>Delivery Address:</strong> {order.deliveryAddress}</li>
+        </ul>
+        <div style={buttonContainerStyle}>
+          <Button variant="danger" onClick={handleDelete} style={deleteButtonStyle}>
+            Delete Order
+          </Button>
+        </div>
       </div>
     </div>
   );
 }
 
 // CSS Styles
-const containerStyle = {
+const backgroundStyle = {
+  backgroundColor: "#ffffff", // White background
+  position: "fixed", // Make it cover the entire screen
+  top: 0,
+  left: 0,
+  width: "100%",
+  height: "100%",
+  display: "flex",
+  justifyContent: "center",
+  alignItems: "center", // Center the content vertically and horizontally
+};
+
+const cardContainerStyle = {
   padding: "30px",
   maxWidth: "600px",
-  margin: "auto",
+  width: "100%", // Ensure the card is responsive
   backgroundColor: "#ffffff",
   borderRadius: "8px",
   boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
@@ -127,6 +143,15 @@ const deleteButtonStyle = {
 const loadingStyle = {
   textAlign: "center",
   paddingTop: "50px",
+};
+
+const backButtonStyle = {
+  position: "absolute",
+  top: "20px",
+  left: "20px",
+  border: "none",
+  background: "none",
+  cursor: "pointer",
 };
 
 export default DeleteOrder;
