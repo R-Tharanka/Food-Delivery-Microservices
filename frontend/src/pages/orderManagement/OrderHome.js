@@ -20,8 +20,6 @@ function OrderHome({ handleDelete, handleEdit }) {
           }
         });
        //console.log(response)
-       
-      // should be if (response.status !== 200) {
        if (response.status!=200) {
          throw new Error("Failed to fetch orders");
        }
