@@ -1,0 +1,55 @@
+.register-container {
+    width: 400px;
+    margin: 80px auto;
+    padding: 30px;
+    border-radius: 10px;
+    background: #f4f4f4;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    font-family: sans-serif;
+  }
+  
+  .register-container h2 {
+    text-align: center;
+    color: #333;
+  }
+  
+  .register-container form {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .register-container input {
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+  }
+  
+  .register-container button {
+    padding: 12px;
+    background: #3a86ff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-weight: bold;
+    cursor: pointer;
+  }
+  
+  .register-container button:hover {
+    background: #265fbb;
+  }
+  
+  .message {
+    text-align: center;
+    margin-top: 15px;
+    color: green;
+  }
+
+  .error {
+    color: red;
+    font-size: 0.85rem;
+    margin-top: -10px;
+    margin-bottom: 10px;
+  }
+  
+  

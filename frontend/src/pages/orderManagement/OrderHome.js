@@ -14,14 +14,12 @@ function OrderHome({ handleDelete, handleEdit }) {
   useEffect(() => {
     const fetchOrders = async () => {
       try {
-        const response =  await axios.get("http://localhost:5000/api/orders", {
+        const response =  await axios.get("http://localhost:5005/api/orders", {
           headers: {
             Authorization: `Bearer ${token}`,
           }
         });
        //console.log(response)
-       
-      // should be if (response.status !== 200) {
        if (response.status!=200) {
          throw new Error("Failed to fetch orders");
        }

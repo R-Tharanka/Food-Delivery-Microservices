@@ -20,6 +20,13 @@ import DeleteOrder from "./components/DeleteOrder";  // Import DeleteOrder page
 import OrderDetails from "./components/OrderDetails";
 
 // resturant management
+import SuperAdminRegister from './pages/restaurant/components/SuperAdminRegister';
+import SuperAdminLogin from './pages/restaurant/components/SuperAdminLogin';
+import SuperAdminDashboard from './pages/restaurant/pages/SuperAdminDashboard';
+import RestaurantRegister from './pages/restaurant/components/RestaurantRegister';
+import RestaurantLogin from './pages/restaurant/components/RestaurantLogin';
+import RestaurantDashboard from './pages/restaurant/pages/RestaurantDashboard';
+import IndexPage from './pages/restaurant/components/IndexPage';
 
 // delivery management
 
@@ -34,18 +41,33 @@ function App() {
   return (
     <Router>
       <Routes>
+        // common routes
         <Route path="/" element={<Home />} />
         <Route path="/about" element={<About />} />
         <Route path="/privacy" element={<PrivacyPolicy />} />
         <Route path="/contact" element={<ContactAndFeedback />} />
 
+        // payment management
         <Route path="/checkout" element={<Checkout />} />
 
+        // order management
         <Route path="/orders" element={<OrderHome orders={OrderHome} />} />
         <Route path="/orders/new" element={<OrderForm addOrder={addOrder} />} />
         <Route path="/orders/edit/:id" element={<UpdateOrder addOrder={addOrder} />} />
         <Route path="/orders/delete/:id" element={<DeleteOrder />} />
         <Route path="/orders/details/:id" element={<OrderDetails />} />
+
+        // restaurant management
+        <Route path="/superadmin/register" element={<SuperAdminRegister />} />
+        <Route path="/superadmin/login" element={<SuperAdminLogin />} />
+        <Route path="/superadmin/dashboard" element={<SuperAdminDashboard />} />
+        <Route path="/super-admin/dashboard" element={<SuperAdminDashboard />} />
+        <Route path="/restaurant/register" element={<RestaurantRegister />} />
+        <Route path="/restaurant/login" element={<RestaurantLogin />} />
+        <Route path="/restaurant/dashboard" element={<RestaurantDashboard />} />
+        <Route path="/restaurant/home" element={<IndexPage />} />
+
+        // delivery management
 
       </Routes>
     </Router>
