@@ -22,8 +22,6 @@ router.post("/", express.raw({ type: "application/json" }), async (req, res) => 
     let paymentIntentId = null;
     if (event.type === "payment_intent.succeeded" || event.type === "payment_intent.payment_failed") {
         paymentIntentId = event.data.object.id;
-    } else if (event.type === "charge.succeeded") {
-        paymentIntentId = event.data.object.payment_intent;
     } else {
         console.log(`ℹ️ Unhandled event type: ${event.type}`);
         return res.json({ received: true });
@@ -58,7 +56,7 @@ router.post("/", express.raw({ type: "application/json" }), async (req, res) => 
             console.warn(`⚠️ No phone number associated with Order ${payment.orderId}`);
         }
 
-        if ((event.type === "payment_intent.succeeded" || event.type === "charge.succeeded") && payment.status !== "Paid") {
+        if (event.type === "payment_intent.succeeded" && payment.status !== "Paid") {
             payment.status = "Paid";
             await payment.save();
             console.log(`✅ Payment for Order ${payment.orderId} updated to Paid.`);

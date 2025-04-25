@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate, useParams } from "react-router-dom";
 import { Button, Form, Spinner } from "react-bootstrap";
+import { ArrowLeftCircle } from "react-bootstrap-icons"; // Back icon
 
 function UpdateOrder({ addOrder }) {
   const [order, setOrder] = useState({
@@ -11,25 +12,22 @@ function UpdateOrder({ addOrder }) {
     totalPrice: 0,
     deliveryAddress: "",
   });
-  const [loading, setLoading] = useState(true); // Track loading state
-  const { id } = useParams(); // Get ID from URL
+  const [loading, setLoading] = useState(true);
+  const { id } = useParams();
   const navigate = useNavigate();
 
-  // Hardcoded token for testing purposes
-  const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3ZTI1NjRiOTU5MjliOGYyNDhkOGEzMCIsInJvbGUiOiJjdXN0b21lciIsImlhdCI6MTc0MzA1OTkwOCwiZXhwIjoxNzQ1NjUxOTA4fQ.nHlIxPjdshWbMRihrny66MzbZI7HcOkrhNGNtKM3Rlk";
+  const token =
+    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3ZTI1NjRiOTU5MjliOGYyNDhkOGEzMCIsInJvbGUiOiJjdXN0b21lciIsImlhdCI6MTc0NDM1MDQ1MSwiZXhwIjoxNzQ2OTQyNDUxfQ.C85afR3WOuprjtjU2Kp1zF6W0eOwbWLExHZ0c5-Z2iY";
 
   useEffect(() => {
     if (id) {
-      console.log("Fetching data for order ID:", id); // Debug log
-
       axios
-        .get(`http://localhost:5000/api/orders/${id}`, {
+        .get(`http://localhost:5005/api/orders/${id}`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
         })
         .then((response) => {
-          console.log("Fetched order:", response.data); // Debug log
           setOrder(response.data);
           setLoading(false);
         })
@@ -39,7 +37,6 @@ function UpdateOrder({ addOrder }) {
           setLoading(false);
         });
     } else {
-      console.error("ID is missing from the URL");
       alert("Order ID is missing.");
       setLoading(false);
     }
@@ -55,7 +52,6 @@ function UpdateOrder({ addOrder }) {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    // Recalculate total price
     const totalPrice = order.items.reduce(
       (total, item) => total + item.quantity * item.price,
       0
@@ -63,21 +59,20 @@ function UpdateOrder({ addOrder }) {
 
     const updatedOrder = { ...order, totalPrice };
 
-    // Send a request to update the existing order
     axios
-      .patch(`http://localhost:5000/api/orders/${id}`, updatedOrder, {
+      .patch(`http://localhost:5005/api/orders/${id}`, updatedOrder, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
       })
       .then((response) => {
-        addOrder(response.data); // Add updated order to the state
-        navigate("/orders"); // Navigate to Home page after updating the order
+        addOrder(response.data);
+        navigate("/orders");
       })
       .catch((error) => console.error("Error updating order:", error));
   };
 
-  // CSS Styles
+  // Styles
   const formStyle = {
     backgroundColor: "#f9f9f9",
     padding: "20px",
@@ -85,7 +80,7 @@ function UpdateOrder({ addOrder }) {
     boxShadow: "0 2px 10px rgba(0, 0, 0, 0.1)",
     width: "500px",
     margin: "auto",
-    marginTop: "50px",
+    marginTop: "20px",
   };
 
   const formGroupStyle = {
@@ -117,23 +112,29 @@ function UpdateOrder({ addOrder }) {
 
   const containerStyle = {
     display: "flex",
-    justifyContent: "center",  // Ensures the content is centered horizontally
-    alignItems: "center",      // Ensures the content is centered vertically
+    justifyContent: "center",
+    alignItems: "center",
     minHeight: "100vh",
     backgroundColor: "#f0f4f8",
     padding: "20px",
-    flexDirection: "column",   // Stack elements vertically
+    flexDirection: "column",
   };
 
   const headingStyle = {
-    textAlign: "center", // Ensures the title is centered
-    marginBottom: "30px", // Adds space below the title
-    fontSize: "28px", // Adjusts the size of the title
-    fontWeight: "bold", // Makes the title bold
-    color: "#333", // Dark color for readability
+    textAlign: "center",
+    marginBottom: "30px",
+    fontSize: "28px",
+    fontWeight: "bold",
+    color: "#333",
   };
 
-  // Show spinner if data is loading
+  const topRightButtonStyle = {
+    width: "100%",
+    display: "flex",
+    justifyContent: "flex-end",
+    marginBottom: "10px",
+  };
+
   if (loading) {
     return (
       <div className="container" style={loadingStyle}>
@@ -145,6 +146,16 @@ function UpdateOrder({ addOrder }) {
 
   return (
     <div className="container" style={containerStyle}>
+      <div style={topRightButtonStyle}>
+        <Button
+          variant="light"
+          onClick={() => navigate("/orders")}
+          style={{ border: "none", background: "none", fontSize: "24px" }}
+        >
+          <ArrowLeftCircle />
+        </Button>
+      </div>
+
       <h2 style={headingStyle}>Edit Order</h2>
       <Form onSubmit={handleSubmit} style={formStyle}>
         <Form.Group style={formGroupStyle}>
@@ -163,7 +174,9 @@ function UpdateOrder({ addOrder }) {
           <Form.Control
             type="text"
             value={order.restaurantId}
-            onChange={(e) => setOrder({ ...order, restaurantId: e.target.value })}
+            onChange={(e) =>
+              setOrder({ ...order, restaurantId: e.target.value })
+            }
             required
             style={formControlStyle}
           />
@@ -212,7 +225,9 @@ function UpdateOrder({ addOrder }) {
           <Form.Control
             type="text"
             value={order.deliveryAddress}
-            onChange={(e) => setOrder({ ...order, deliveryAddress: e.target.value })}
+            onChange={(e) =>
+              setOrder({ ...order, deliveryAddress: e.target.value })
+            }
             required
             style={formControlStyle}
           />

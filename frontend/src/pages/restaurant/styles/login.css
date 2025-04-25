@@ -1,0 +1,56 @@
+.login-container {
+    width: 400px;
+    margin: 80px auto;
+    padding: 30px;
+    border-radius: 10px;
+    background: #f9f9f9;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    font-family: sans-serif;
+  }
+  
+  .login-container h2 {
+    text-align: center;
+    color: #333;
+  }
+  
+  .login-container form {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .login-container input {
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+  }
+  
+  .login-container button {
+    padding: 12px;
+    background: #06d6a0;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-weight: bold;
+    cursor: pointer;
+  }
+  
+  .login-container button:hover {
+    background: #029e74;
+  }
+  
+  .message {
+    text-align: center;
+    margin-top: 15px;
+    color: green;
+  }
+  
+  /* ✅ Real-time validation error styles */
+  .error {
+    color: red;
+    margin-top: -8px;
+    margin-bottom: 8px;
+    font-size: 0.85rem;
+    padding-left: 5px;
+  }
+  

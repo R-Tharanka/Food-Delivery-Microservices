@@ -1,0 +1,27 @@
+version: "3.8"
+
+services:
+
+  payment-service:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: payment-service
+    restart: unless-stopped
+    ports:
+      - "5004:5004"
+    environment:
+      # In local dev we point at our local mongo container:
+      - MONGO_URI=${MONGO_URI}
+      # - MONGO_URI=mongodb://mongo:27017/Payment
+      - PORT=5004
+      - JWT_SECRET=${JWT_SECRET}
+
+      - STRIPE_SECRET_KEY=${STRIPE_SECRET_KEY}
+      - STRIPE_WEBHOOK_SECRET=${STRIPE_WEBHOOK_SECRET}
+
+      - TWILIO_ACCOUNT_SID=${TWILIO_ACCOUNT_SID}
+      - TWILIO_AUTH_TOKEN=${TWILIO_AUTH_TOKEN}
+      - TWILIO_PHONE_NUMBER=${TWILIO_PHONE_NUMBER}
+
+      - RESEND_API_KEY=${RESEND_API_KEY}
