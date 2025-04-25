@@ -25,7 +25,7 @@ A cloud-native food ordering & delivery platform using the MERN stack with a mic
 ###  1. Clone the Repository
 
 ```sh
-git clone https://github.com/YOUR-USERNAME/Food-Delivery-Microservices.git
+git clone https://github.com/R-Tharanka/Food-Delivery-Microservices.git
 cd Food-Delivery-Microservices
 
 ```

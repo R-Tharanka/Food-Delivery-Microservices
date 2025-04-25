@@ -14,7 +14,7 @@ function OrderHome({ handleDelete, handleEdit }) {
   useEffect(() => {
     const fetchOrders = async () => {
       try {
-        const response =  await axios.get("http://localhost:5000/api/orders", {
+        const response =  await axios.get("http://localhost:5005/api/orders", {
           headers: {
             Authorization: `Bearer ${token}`,
           }

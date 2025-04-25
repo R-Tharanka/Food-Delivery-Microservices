@@ -1,0 +1,139 @@
+.rdashboard-container {
+    max-width: 1000px; 
+    margin: 50px auto;
+    padding: 20px;
+    background: #fefefe;
+    border-radius: 12px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    font-family: sans-serif;
+}
+
+.dashboard-container h2 {
+    text-align: center;
+    margin-bottom: 20px;
+    color: #222;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th,
+td {
+    padding: 12px;
+    text-align: center;
+    border-bottom: 1px solid #ddd;
+}
+
+th {
+    background-color: #f2f2f2;
+    color: #333;
+}
+
+button {
+    display: inline-block; /* Prevent buttons from taking full width */
+    margin: 0 4px;
+    padding: 6px 10px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    width: auto; /* Ensure buttons only take up as much space as needed */
+    text-align: center; /* Center-align text inside buttons */
+}
+
+.view-btn {
+    background: #3498db;
+    color: white;
+}
+
+.sedit-btn {
+    background: #f1c40f;
+    color: black;
+    padding: 4px 8px; /* Reduced padding for a smaller button */
+    font-size: 14px; /* Smaller font size */
+    width: 80px; /* Reduced width */
+    font-style: bold;
+}
+
+.sdelete-btn {
+    background: #e74c3c;
+    color: white;
+    padding: 4px 8px; /* Reduced padding for a smaller button */
+    font-size: 14px; /* Smaller font size */
+    width: 80px; /* Reduced width */
+    font-style: bold;
+    
+}
+
+.error {
+    color: red;
+    text-align: center;
+}
+
+.edit-form {
+    background: #f9f9f9;
+    padding: 20px;
+    margin-top: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
+}
+
+.edit-form input {
+    display: block;
+    margin-bottom: 10px;
+    padding: 10px;
+    width: 100%;
+}
+
+.save-btn,
+.cancel-btn {
+    display: inline-block; /* Prevent buttons from taking full width */
+    padding: 10px 20px;
+    margin-right: 10px;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+    width: auto; /* Ensure buttons only take up as much space as needed */
+}
+
+.save-btn {
+    background-color: #28a745;
+    color: white;
+}
+
+.cancel-btn {
+    background-color: #6c757d;
+    color: white;
+}
+
+.search-bar {
+    width: 50%;
+    padding: 10px;
+    margin-bottom: 20px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    font-size: 16px;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.dashboard-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    font-size: 16px;
+}
+
+.logout-btn {
+    display: inline-block; /* Prevent buttons from taking full width */
+    background-color: #dc3545;
+    color: white;
+    padding: 8px 16px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    width: auto; /* Ensure buttons only take up as much space as needed */
+}

@@ -1,0 +1,27 @@
+# Node.js dependencies
+node_modules/
+npm-debug.log
+package-lock.json
+
+# Logs
+logs/
+*.log
+debug.log
+error.log
+
+# Environment variables
+.env
+
+# Database files (if using SQLite or local storage)
+*.sqlite
+*.sqlite-journal
+
+# Generated files
+dist/
+coverage/
+
+# IDE/Editor-specific files
+.vscode/
+.idea/
+.DS_Store
+*.swp

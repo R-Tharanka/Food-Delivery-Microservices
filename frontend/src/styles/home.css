@@ -1,0 +1,235 @@
+@import './colors.css';
+
+/* filepath: d:\work\Year - 3\sem 1\ds\project\Food-Delivery-Microservices\frontend\src\styles\home.css */
+
+/* General styles for the home page */
+.home-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  font-family: Arial, sans-serif;
+  background-color: #f9f9f9;
+}
+
+.home-main {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  padding: 0; /* Removed padding */
+}
+
+.hero-section {
+  text-align: center;
+  background: var(--color-orange);
+  color: var(--color-white);
+  width: 100%;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  padding: 50px 0; /* Set top and bottom padding to 50px, left and right to 0 */
+}
+
+.hero-title {
+  font-size: 2.5rem;
+  color: #fff;
+  margin-bottom: 20px;
+}
+
+.hero-subtitle {
+  font-size: 1.2rem;
+  color: #fff;
+  margin-bottom: 30px;
+}
+
+/* Update CTA button hover state to change border color to green with animation */
+.hero-button {
+  display: inline-block;
+  padding: 10px 20px;
+  font-size: 1rem;
+  color: var(--color-white);
+  background-color: var(--color-black);
+  text-decoration: none;
+  border-radius: 5px;
+  transition: background-color 0.3s ease;
+  border: 2px solid transparent; /* Initial border state */
+  transition: border-color 0.3s ease; /* Add border animation */
+}
+
+/* Update hero button hover state to green */
+.hero-button:hover {
+  border-color: var(--color-green); /* Change border color to green on hover */
+}
+
+/* Updated styles for the featured-categories section */
+.featured-categories {
+  padding: 40px 20px; /* Increased padding for better spacing */
+  background-color: var(--color-light-gray); /* Added background color */
+  text-align: center; /* Center align text */
+}
+
+.featured-categories h2 {
+  font-size: 2rem;
+  color: var(--color-black);
+  margin-bottom: 20px; /* Added spacing below the heading */
+}
+
+/* Updated styles for the featured-categories section to dynamically adjust the number of categories displayed per row based on screen width */
+.featured-categories .categories-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr); /* Default to 4 categories per row */
+  gap: 20px; /* Added gap between grid items */
+  align-items: center; /* Center align items vertically */
+  justify-items: stretch; /* Stretch items to fill the grid cell */
+  justify-content: center; /* Center align the grid content */
+}
+
+@media (max-width: 1200px) {
+  .featured-categories .categories-grid {
+    grid-template-columns: repeat(3, 1fr); /* Reduce to 3 categories per row for medium screens */
+  }
+}
+
+@media (max-width: 768px) {
+  .featured-categories .categories-grid {
+    grid-template-columns: repeat(2, 1fr); /* Reduce to 2 categories per row for small screens */
+  }
+}
+
+@media (max-width: 480px) {
+  .featured-categories .categories-grid {
+    grid-template-columns: 1fr; /* Display 1 category per row for very small screens */
+  }
+}
+
+.featured-categories .category-card {
+  background-color: var(--color-white);
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Added shadow for depth */
+  overflow: hidden; /* Ensure content stays within the card */
+  transition: transform 0.3s ease, box-shadow 0.3s ease; /* Smooth hover effect */
+}
+
+.featured-categories .category-card:hover {
+  transform: translateY(-10px); /* Lift card on hover */
+  box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15); /* Enhance shadow on hover */
+}
+
+.featured-categories .category-card img {
+  width: 100%;
+  height: 150px; /* Fixed height for uniformity */
+  object-fit: cover; /* Ensure image covers the area */
+}
+
+.featured-categories .category-card h3 {
+  font-size: 1.2rem;
+  color: var(--color-black);
+  margin: 10px 0;
+  padding: 0 10px; /* Added padding for better spacing */
+}
+
+/* Updated styles for the how-it-works section to display steps in a horizontal flow */
+.how-it-works {
+  padding: 40px 20px; /* Increased padding for better spacing */
+  background-color: var(--color-light-gray); /* Added background color */
+  text-align: center; /* Center align text */
+}
+
+.how-it-works h2 {
+  font-size: 2rem;
+  color: var(--color-black);
+  margin-bottom: 20px; /* Added spacing below the heading */
+}
+
+/* Removed horizontal line and its related styles */
+.how-it-works .steps {
+  display: flex;
+  flex-wrap: wrap; /* Allow wrapping for smaller screens */
+  justify-content: center; /* Center align the steps */
+  gap: 20px; /* Added gap between steps */
+  position: relative; /* Set relative positioning for the container */
+}
+
+/* Add arrow heads between steps */
+.how-it-works .steps .arrow {
+  width: 20px;
+  height: 20px;
+  background-color: var(--color-black);
+  clip-path: polygon(0 0, 100% 50%, 0 100%); /* Create arrow shape */
+  z-index: 1; /* Ensure arrows are above the steps */
+}
+
+/* Added step numbers to the top-left corner of each step card */
+.how-it-works .step {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 200px; /* Fixed width for uniformity */
+  background-color: var(--color-white);
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Added shadow for depth */
+  padding: 20px; /* Added padding inside each step */
+  transition: transform 0.3s ease, box-shadow 0.3s ease; /* Smooth hover effect */
+  position: relative; /* Set relative positioning for each step */
+  z-index: 1; /* Ensure steps are above the arrows */
+}
+
+/* Updated step numbers to appear in the top-right corner of each card */
+.how-it-works .step::before {
+  content: attr(data-step); /* Use the data-step attribute for the step number */
+  position: absolute;
+  top: 10px;
+  right: 10px; /* Moved to the top-right corner */
+  background-color: var(--color-orange); /* Background color for the step number */
+  color: var(--color-white); /* Predefined white text color */
+  font-size: 1rem;
+  font-weight: bold;
+  padding: 5px 10px;
+  border-radius: 50%; /* Circular shape for the step number */
+  z-index: 2; /* Ensure it appears above other elements */
+}
+
+.how-it-works .steps .step + .arrow {
+  margin-left: -10px; /* Adjust spacing between step and arrow */
+  align-self: center; /* Center align the arrow */
+}
+
+.how-it-works .step:hover {
+  transform: translateY(-10px); /* Lift step on hover */
+  box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15); /* Enhance shadow on hover */
+}
+
+.how-it-works .step .step-icon {
+  width: 80px;
+  height: 80px;
+  margin-bottom: 10px;
+}
+
+.how-it-works .step .step-icon img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.how-it-works .step .step-title {
+  font-size: 1.2rem;
+  color: var(--color-black);
+  margin-bottom: 10px;
+}
+
+.how-it-works .step .step-description {
+  font-size: 0.9rem;
+  color: var(--color-gray);
+  text-align: center;
+}
+
+.testimonials {
+  padding: 20px; /* Added padding for testimonials section */
+}
+
+.testimonials .testimonial img {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-bottom: 10px;
+}

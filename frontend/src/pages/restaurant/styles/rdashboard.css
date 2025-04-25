@@ -1,0 +1,341 @@
+/* General Styles */
+body {
+    font-family: 'Arial', sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f9f9f9;
+  }
+  
+  .dashboard-container {
+    display: grid;
+    grid-template-columns: 280px 1fr;
+    height: 100vh;
+    overflow: hidden;
+  }
+  
+  /* Sidebar */
+  .dashboard-sidebar {
+    background-color: #2c3e50;
+    color: white;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+  
+  .dashboard-sidebar button {
+    background-color: #34495e;
+    color: white;
+    border: none;
+    padding: 12px 20px;
+    border-radius: 8px;
+    cursor: pointer;
+    text-align: left;
+    font-size: 16px;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+  }
+  
+  .dashboard-sidebar button:hover {
+    background-color: #1abc9c;
+    transform: scale(1.05);
+  }
+  
+  /* Header */
+  .dashboard-header {
+    grid-column: span 2;
+    background-color: #34495e;
+    color: white;
+    padding: 20px 30px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .dashboard-header p {
+    margin: 0;
+    font-size: 20px;
+  }
+  
+  .logout-btn {
+    background-color: #e74c3c;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+  }
+  
+  .logout-btn:hover {
+    background-color: #c0392b;
+    transform: scale(1.05);
+  }
+  
+  /* Main Content */
+  .dashboard-content {
+    padding: 30px;
+    overflow-y: auto;
+  }
+  
+  .dashboard-content h2 {
+    margin-bottom: 25px;
+    color: #2c3e50;
+    font-size: 26px;
+    font-weight: bold;
+  }
+  
+  /* Profile Section */
+  .dashboard-content img {
+    border: 4px solid #1abc9c;
+    margin-bottom: 20px;
+    border-radius: 50%;
+    width: 150px;
+    height: 150px;
+    object-fit: cover;
+  }
+  
+  .edit-btn {
+    background-color: #1abc9c;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+  }
+  
+  .edit-btn:hover {
+    background-color: #16a085;
+    transform: scale(1.05);
+  }
+  
+  /* Food Items Section */
+  .search-bar {
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 25px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-size: 16px;
+  }
+  
+  .food-item-card {
+    display: grid;
+    grid-template-columns: 100px 1fr auto;
+    gap: 20px;
+    background-color: white;
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+  
+  .food-item-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+  }
+  
+  .food-item-card img {
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+    border-radius: 8px;
+  }
+  
+  .food-item-card .details {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+  
+  .food-item-card .details h4 {
+    margin: 0;
+    font-size: 18px;
+    color: #2c3e50;
+    font-weight: bold;
+  }
+  
+  .food-item-card .details p {
+    margin: 5px 0;
+    color: #7f8c8d;
+    font-size: 14px;
+  }
+  
+  .food-item-card .actions {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  
+  /* Food Items Section Buttons */
+  .food-item-card .actions button {
+    padding: 10px 15px; /* Uniform padding for both buttons */
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 14px;
+    width: 120px; /* Fixed width for both buttons */
+    text-align: center; /* Center-align text inside buttons */
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    display: inline-block; /* Ensure buttons don’t stretch */
+  }
+  
+  .food-item-card .edit-btn {
+    background-color: #3498db; /* Blue for Save Changes */
+    color: white;
+    padding: 10px 20px; /* Ensure consistent padding */
+  }
+  
+  .food-item-card .edit-btn:hover {
+    background-color: #2980b9;
+    transform: scale(1.05);
+  }
+  
+  .food-item-card .cancel-btn {
+    background-color: #e74c3c; /* Red for Cancel */
+    color: white;
+    padding: 10px 20px; /* Ensure consistent padding */
+  }
+  
+  .food-item-card .cancel-btn:hover {
+    background-color: #c0392b;
+    transform: scale(1.05);
+  }
+  
+  /* Availability Section */
+  .dashboard-content .availability {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+  }
+  
+  .dashboard-content .availability button {
+    background-color: #1abc9c;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+  }
+  
+  .dashboard-content .availability button:hover {
+    background-color: #16a085;
+    transform: scale(1.05);
+  }
+  
+  /* Form Styles */
+  form input,
+  form textarea {
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 20px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-size: 14px;
+  }
+  
+  form button {
+    background-color: #1abc9c;
+    color: white;
+    border: none;
+    padding: 10px 20px; /* Ensure consistent padding */
+    border-radius: 8px; /* Slightly larger border radius */
+    cursor: pointer;
+    font-size: 14px; /* Ensure consistent font size */
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    margin-right: 10px; /* Add space between buttons */
+  }
+  
+  form button.save-btn {
+    background-color: #3498db; /* Blue for Save Changes */
+    color: white;
+  }
+  
+  form button.save-btn:hover {
+    background-color: #2980b9;
+    transform: scale(1.05);
+  }
+  
+  form button.cancel-btn {
+    background-color: #e74c3c; /* Red for Cancel */
+    color: white;
+  }
+  
+  form button.cancel-btn:hover {
+    background-color: #c0392b;
+    transform: scale(1.05);
+  }
+
+  /* Save Changes Button */
+.rsave-btn {
+    background-color: #3498db !important; /* Blue for Save Changes */
+    color: white !important;
+    border: none !important;
+    padding: 10px 20px !important;
+    border-radius: 8px !important;
+    cursor: pointer !important;
+    font-size: 14px !important;
+    transition: background-color 0.3s ease, transform 0.2s ease !important;
+  }
+  
+  .rsave-btn:hover {
+    background-color: #2980b9 !important;
+    transform: scale(1.05) !important;
+  }
+  
+  /* Cancel Button */
+  .rcancel-btn {
+    background-color: #e74c3c !important; /* Red for Cancel */
+    color: white !important;
+    border: none !important;
+    padding: 10px 20px !important;
+    border-radius: 8px !important;
+    cursor: pointer !important;
+    font-size: 14px !important;
+    transition: background-color 0.3s ease, transform 0.2s ease !important;
+  }
+  
+  .rcancel-btn:hover {
+    background-color: #c0392b !important;
+    transform: scale(1.05) !important;
+  }
+
+  /* Edit Button (Green) */
+.fedit-btn {
+    background-color: #1abc9c !important; /* Green for Edit */
+    color: white !important;
+    border: none !important;
+    padding: 10px 10px !important;
+    border-radius: 8px !important;
+    cursor: pointer !important;
+    font-size: 14px !important;
+    transition: background-color 0.3s ease, transform 0.2s ease !important;
+  }
+  
+  .fedit-btn:hover {
+    background-color: #16a085 !important;
+    transform: scale(1.05) !important;
+  }
+  
+  /* Delete Button (Red) */
+  .fdelete-btn {
+    background-color: #e74c3c !important; /* Red for Delete */
+    color: white !important;
+    border: none !important;
+    padding: 10px 10px !important;
+    border-radius: 8px !important;
+    cursor: pointer !important;
+    font-size: 14px !important;
+    transition: background-color 0.3s ease, transform 0.2s ease !important;
+  }
+  
+  .fdelete-btn:hover {
+    background-color: #c0392b !important;
+    transform: scale(1.05) !important;
+  }

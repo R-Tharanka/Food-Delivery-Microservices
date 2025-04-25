@@ -1,0 +1,89 @@
+.index-container {
+    display: flex;
+    flex-direction: column; /* Stack items vertically */
+    align-items: center; /* Center items horizontally */
+    justify-content: center; /* Center items vertically */
+    height: 100vh; /* Full viewport height */
+    font-family: 'Arial', sans-serif;
+    background-color: #f9f9f9;
+  }
+  
+  .index-container h1 {
+    font-size: 32px;
+    margin-bottom: 20px;
+    color: #333;
+    text-align: center; /* Center the welcome message */
+  }
+  
+  /* General Button Styles */
+  .index-container button {
+    padding: 10px 20px;
+    margin: 10px 0; /* Add vertical spacing between buttons */
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 16px;
+    color: white;
+    transition: background-color 0.3s ease;
+    width: 200px; /* Set a fixed width for buttons */
+    text-align: center; /* Center text inside buttons */
+  }
+  
+  /* Login Button (Blue) */
+  .index-container .login-btn {
+    background-color: #3498db; /* Blue for Login */
+  }
+  
+  .index-container .login-btn:hover {
+    background-color: #2980b9;
+  }
+  
+  /* SignUp Button (Orange) */
+  .index-container .signup-btn {
+    background-color: #f39c12; /* Orange for SignUp */
+  }
+  
+  .index-container .signup-btn:hover {
+    background-color: #e67e22;
+  }
+  
+  /* SuperAdmin and RestaurantAdmin Buttons */
+  .index-container .admin-btn,
+  .index-container .restaurant-btn {
+    margin-bottom: 10px; /* Add space between these buttons */
+  }
+  
+  .index-container .admin-btn {
+    background-color: #ecce37; /* Purple for Admin Buttons */
+    margin-bottom: 15px;
+  }
+  
+  .index-container .admin-btn:hover {
+    background-color: #e3e60e;
+  }
+  
+  .index-container .restaurant-btn {
+    background-color: #27ae60; /* Green for Restaurant Buttons */
+    margin-top: 15px;
+  }
+  
+  .index-container .restaurant-btn:hover {
+    background-color: #1e8449;
+  }
+  
+  /* HomePage Button (No Changes) */
+  .index-container .homepage-btn {
+    background-color: #2ecc71;
+  }
+  
+  .index-container .homepage-btn:hover {
+    background-color: #27ae60;
+  }
+
+  /* Wrapper for SuperAdmin and RestaurantAdmin Buttons */
+.index-container .button-group {
+    display: flex;
+   /* flex-direction: column; /* Stack buttons vertically */
+    gap: 15px; /* Add consistent spacing between buttons */
+    align-items: center; /* Center buttons horizontally */
+  }
