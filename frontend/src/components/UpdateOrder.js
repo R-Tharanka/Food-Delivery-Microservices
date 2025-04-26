@@ -96,7 +96,7 @@ function UpdateOrder({ addOrder }) {
   };
 
   const buttonStyle = {
-    backgroundColor: "#007bff",
+    backgroundColor: "#dd7f32",
     color: "#fff",
     border: "none",
     padding: "10px 20px",
@@ -233,7 +233,7 @@ function UpdateOrder({ addOrder }) {
           />
         </Form.Group>
 
-        <Button type="submit" style={buttonStyle}>
+        <Button type="submit" style={buttonStyle} >
           Update Order
         </Button>
       </Form>
