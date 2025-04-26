@@ -142,7 +142,8 @@ function OrderDetails() {
             cursor: "pointer",
             padding: "10px",
             fontSize: "20px",
-            boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)"
+            boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)",
+            width:"50px"
           }}
         >
           <BsFilePdf size={24} color="#e60000" />
