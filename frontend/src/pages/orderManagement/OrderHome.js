@@ -1,28 +1,29 @@
 import React, { useEffect, useState } from "react";
-import { Table, Form } from "react-bootstrap";  // Import Table for displaying the order data and Form for search input
-import { Link } from "react-router-dom";  // Import Link for navigation
-import { FaEdit, FaTrashAlt, FaEye } from 'react-icons/fa';  // Import icons for Edit, Delete, and Show Details
+import { Table, Form } from "react-bootstrap"; // Import Table for displaying the order data and Form for search input
+import { Link } from "react-router-dom"; // Import Link for navigation
+import { FaEdit, FaTrashAlt, FaEye } from "react-icons/fa"; // Import icons for Edit, Delete, and Show Details
 import axios from "axios";
 
-const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3ZTI1NjRiOTU5MjliOGYyNDhkOGEzMCIsInJvbGUiOiJjdXN0b21lciIsImlhdCI6MTc0NDM1MDQ1MSwiZXhwIjoxNzQ2OTQyNDUxfQ.C85afR3WOuprjtjU2Kp1zF6W0eOwbWLExHZ0c5-Z2iY";
+const token =
+  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3ZTI1NjRiOTU5MjliOGYyNDhkOGEzMCIsInJvbGUiOiJjdXN0b21lciIsImlhdCI6MTc0NDM1MDQ1MSwiZXhwIjoxNzQ2OTQyNDUxfQ.C85afR3WOuprjtjU2Kp1zF6W0eOwbWLExHZ0c5-Z2iY";
 
 function OrderHome({ handleDelete, handleEdit }) {
   const [orders, setOrders] = useState([]);
-  const [searchQuery, setSearchQuery] = useState("");  // State to store the search query
+  const [searchQuery, setSearchQuery] = useState(""); // State to store the search query
 
   // Load orders from localStorage when the component mounts
   useEffect(() => {
     const fetchOrders = async () => {
       try {
-        const response =  await axios.get("http://localhost:5005/api/orders", {
+        const response = await axios.get("http://localhost:5005/api/orders", {
           headers: {
             Authorization: `Bearer ${token}`,
-          }
+          },
         });
-       //console.log(response)
-       if (response.status!=200) {
-         throw new Error("Failed to fetch orders");
-       }
+        //console.log(response)
+        if (response.status != 200) {
+          throw new Error("Failed to fetch orders");
+        }
         const data = await response.data;
 
         setOrders(data);
@@ -30,17 +31,16 @@ function OrderHome({ handleDelete, handleEdit }) {
         console.error("Error fetching orders:", error);
       }
     };
-  
+
     fetchOrders();
   }, []);
 
   // Filter orders based on the search query (restaurant ID)
   const filteredOrders = orders
-  .filter(order => order.status.toLowerCase() !== "canceled") 
-  .filter((order) =>
-    order.restaurantId.toLowerCase().includes(searchQuery.toLowerCase())
-  );
-
+    .filter((order) => order.status.toLowerCase() !== "canceled")
+    .filter((order) =>
+      order.restaurantId.toLowerCase().includes(searchQuery.toLowerCase())
+    );
 
   // Handle search query change
   const handleSearchChange = (e) => {
@@ -48,8 +48,13 @@ function OrderHome({ handleDelete, handleEdit }) {
   };
 
   return (
-    <div className="container" style={{ padding: "20px", backgroundColor: "#f8f9fa" }}>
-      <h1 style={{ textAlign: "center", marginBottom: "20px", color: "#333" }}>Place Your Order</h1>
+    <div
+      className="container"
+      style={{ padding: "20px", backgroundColor: "#f8f9fa" }}
+    >
+      <h1 style={{ textAlign: "center", marginBottom: "20px", color: "#333" }}>
+        Place Your Order
+      </h1>
 
       {/* Search Bar */}
       <Form.Group style={{ marginBottom: "20px" }}>
@@ -59,10 +64,11 @@ function OrderHome({ handleDelete, handleEdit }) {
           value={searchQuery}
           onChange={handleSearchChange}
           style={{
-            padding: "12px",
+            padding: "10px",
             fontSize: "16px",
             borderRadius: "4px",
             border: "1px solid #ddd",
+            width: "400px"
           }}
         />
       </Form.Group>
@@ -79,21 +85,39 @@ function OrderHome({ handleDelete, handleEdit }) {
             borderRadius: "4px",
             boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
             transition: "background-color 0.3s ease",
+            width: "200px", // Fixed width
           }}
-          onMouseOver={(e) => e.target.style.backgroundColor = "#7ec1e3"}
-          onMouseOut={(e) => e.target.style.backgroundColor = "#a3d8f4"}
+          onMouseOver={(e) => (e.target.style.backgroundColor = "#7ec1e3")}
+          onMouseOut={(e) => (e.target.style.backgroundColor = "#a3d8f4")}
         >
           Add New Order
         </button>
       </Link>
 
       {/* Orders Table */}
-      <Table striped bordered hover style={{ width: "100%", marginTop: "20px", backgroundColor: "#ffffff", borderRadius: "8px" }}>
-        <thead style={{ backgroundColor: "#a3d8f4", color: "#fff", textAlign: "center", fontWeight: "bold" }}>
+      <Table
+        striped
+        bordered
+        hover
+        style={{
+          width: "100%",
+          marginTop: "20px",
+          backgroundColor: "#ffffff",
+          borderRadius: "8px",
+        }}
+      >
+        <thead
+          style={{
+            backgroundColor: "#a3d8f4",
+            color: "#fff",
+            textAlign: "center",
+            fontWeight: "bold",
+          }}
+        >
           <tr>
-            <th>Customer ID</th>
-            <th>Restaurant ID</th>
-            <th>Food ID</th>
+            <th>Customer Name</th>
+            <th>Restaurant Name</th>
+            <th>Food </th>
             <th>Quantity</th>
             <th>Price</th>
             <th>Total Price</th>
@@ -112,7 +136,12 @@ function OrderHome({ handleDelete, handleEdit }) {
 
               {/* Map through the items array to display Food ID, Quantity, and Price */}
               {order.items.map((item, index) => (
-                <tr key={`${order._id}-${item.foodId}-${index}`} style={{ backgroundColor: index % 2 === 0 ? "#ffffff" : "#f2f2f2" }}>
+                <tr
+                  key={`${order._id}-${item.foodId}-${index}`}
+                  style={{
+                    backgroundColor: index % 2 === 0 ? "#ffffff" : "#f2f2f2",
+                  }}
+                >
                   <td>{item.foodId}</td>
                   <td>{item.quantity}</td>
                   <td>{item.price}</td>
@@ -121,7 +150,13 @@ function OrderHome({ handleDelete, handleEdit }) {
                   {/* Options Column with Edit, Delete, and Show Details Icons */}
                   <td>
                     <Link to={`/orders/edit/${order._id}`} onClick={() => {}}>
-                      <FaEdit style={{ color: "#ffc107", cursor: "pointer", marginRight: "10px" }} />
+                      <FaEdit
+                        style={{
+                          color: "#ffc107",
+                          cursor: "pointer",
+                          marginRight: "10px",
+                        }}
+                      />
                     </Link>
                     <Link to={`/orders/delete/${order._id}`} onClick={() => {}}>
                       <FaTrashAlt />
