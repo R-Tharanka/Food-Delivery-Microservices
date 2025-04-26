@@ -51,7 +51,7 @@ function OrderForm({ addOrder }) {
     const newOrder = { ...order, totalPrice };
 
     try {
-      await axios.post("http://localhost:5005/api/orders", newOrder, {
+      await axios.post("http://localhost:5000/api/orders", newOrder, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -358,18 +358,18 @@ function OrderForm({ addOrder }) {
               width: "100%",
               padding: "14px",
               fontSize: "16px",
-              backgroundColor: "#a3d8f4",
-              borderColor: "#a3d8f4",
+              backgroundColor: "#dd7f32",
+              borderColor: "#dd7f32",
               color: "#fff",
               borderRadius: "4px",
               boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
               transition: "background-color 0.3s ease",
             }}
             onMouseOver={(e) =>
-              (e.target.style.backgroundColor = "#7ec1e3")
+              (e.target.style.backgroundColor = "#dd7f32")
             }
             onMouseOut={(e) =>
-              (e.target.style.backgroundColor = "#a3d8f4")
+              (e.target.style.backgroundColor = "#f0a35f")
             }
             disabled={loading}
           >
