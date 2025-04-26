@@ -8,7 +8,7 @@ router.post("/login",           authController.login);
 
 // Protected customer routes
 router
-  .route("/customer/me")
+  .route("/customer/profile")
   .get(protect, authController.getProfile)
   .patch(protect, authController.updateProfile);
 
