@@ -19,7 +19,7 @@
 
 /* Inputs all share the same style */
 .auth-form-container input {
-    width: 100%;
+    width: 360px;
     padding: 12px 14px;
     margin-bottom: 16px;
     border: 1px solid #ccc;
@@ -35,7 +35,9 @@
 
 /* The primary button */
 .auth-form-container button {
-    width: 100%;
+    width: 120px;
+    margin-top: 20px;
+    margin-bottom: 10px;
     padding: 12px;
     background: #5b8df9;
     color: white;
