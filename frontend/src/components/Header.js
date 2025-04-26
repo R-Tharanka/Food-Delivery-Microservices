@@ -25,20 +25,16 @@ function Header() {
           <Link to="/" className="logo">SkyDish</Link>
         </div>
         <div className="header-right">
-          <motion.button
-            className="login-button"
-            whileHover={{ scale: 1.1 }}
-            whileTap={{ scale: 0.9 }}
-          >
-            Login
-          </motion.button>
-          <motion.button
-            className="signup-button"
-            whileHover={{ scale: 1.1 }}
-            whileTap={{ scale: 0.9 }}
-          >
-            Signup
-          </motion.button>
+          <Link to="/auth/login">
+            <motion.button className="login-button" whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}>
+              Login
+            </motion.button>
+          </Link>
+          <Link to="/auth/register">
+            <motion.button className="signup-button" whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}>
+              Signup
+            </motion.button>
+          </Link>
         </div>
       </motion.header>
 

@@ -8,6 +8,11 @@ import About from "./pages/About";
 import PrivacyPolicy from "./pages/PrivacyPolicy";
 import ContactAndFeedback from "./pages/ContactAndFeedback";
 
+// auth components
+import AuthLogin from "./pages/auth/AuthLogin";
+import AuthRegister from "./pages/auth/AuthRegister";
+import CustomerProfile from "./pages/auth/CustomerProfile";
+
 // payment management
 import Checkout from "./pages/payment/Checkout";
 
@@ -46,6 +51,11 @@ function App() {
         <Route path="/about" element={<About />} />
         <Route path="/privacy" element={<PrivacyPolicy />} />
         <Route path="/contact" element={<ContactAndFeedback />} />
+
+        // auth routes
+        <Route path="/auth/login" element={<AuthLogin />} />
++       <Route path="/auth/register" element={<AuthRegister />} />
+        <Route path="/customer/profile" element={<CustomerProfile />} />
 
         // payment management
         <Route path="/checkout" element={<Checkout />} />
