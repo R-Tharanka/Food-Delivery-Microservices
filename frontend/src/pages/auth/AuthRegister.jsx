@@ -1,6 +1,8 @@
+// src/pages/auth/AuthRegister.jsx
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import axios from "axios";
+import "../../styles/auth.css";
 
 export default function AuthRegister() {
   const [form, setForm] = useState({
@@ -20,9 +22,7 @@ export default function AuthRegister() {
     setError("");
     try {
       const res = await axios.post("http://localhost:4000/api/auth/register/customer", form);
-      // Store JWT
       localStorage.setItem("token", res.data.token);
-      // Redirect to a protected page (e.g. customer profile)
       navigate("/customer/profile");
     } catch (err) {
       setError(err.response?.data?.message || "Registration failed");
@@ -31,17 +31,22 @@ export default function AuthRegister() {
 
   return (
     <div className="auth-form-container">
-      <h2>Register as Customer</h2>
-      {error && <p className="error">{error}</p>}
+      <h2>Create Your Account</h2>
+
+      {error && <div className="error">{error}</div>}
+
       <form onSubmit={handleSubmit}>
-        <input name="firstName"  placeholder="First Name" onChange={handleChange} required/>
-        <input name="lastName"   placeholder="Last Name"  onChange={handleChange} required/>
-        <input name="email"      type="email" placeholder="Email" onChange={handleChange} required/>
-        <input name="phone"      placeholder="Phone" onChange={handleChange} required/>
-        <input name="password"   type="password" placeholder="Password" onChange={handleChange} required/>
-        <input name="location"   placeholder="Location" onChange={handleChange}/>
+        <input name="firstName" placeholder="First Name" onChange={handleChange} value={form.firstName} required />
+        <input name="lastName" placeholder="Last Name" onChange={handleChange} value={form.lastName} required />
+        <input name="email" type="email" placeholder="Email" onChange={handleChange} value={form.email} required />
+        <input name="phone" placeholder="Phone Number" onChange={handleChange} value={form.phone} required />
+        <input name="password" type="password" placeholder="Password" onChange={handleChange} value={form.password} required />
+        <input name="location" placeholder="Location" onChange={handleChange} value={form.location} />
         <button type="submit">Sign Up</button>
       </form>
+
+      <p className="auth-alt"> Already have an account? <Link to="/auth/login">Login here</Link> </p>
+
     </div>
   );
 }
