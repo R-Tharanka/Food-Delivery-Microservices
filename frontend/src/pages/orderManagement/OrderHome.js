@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Table, Form } from "react-bootstrap"; // Import Table for displaying the order data and Form for search input
-import { Link } from "react-router-dom"; // Import Link for navigation
-import { FaEdit, FaTrashAlt, FaEye } from "react-icons/fa"; // Import icons for Edit, Delete, and Show Details
+import { Link, useNavigate } from "react-router-dom"; // Import Link for navigation and useNavigate for programmatic navigation
+import { FaEdit, FaTrashAlt, FaEye, FaShoppingCart, FaHome } from "react-icons/fa"; // Import icons
 import axios from "axios";
 
 const token =
@@ -9,9 +9,11 @@ const token =
 
 function OrderHome({ handleDelete, handleEdit }) {
   const [orders, setOrders] = useState([]);
-  const [searchQuery, setSearchQuery] = useState(""); // State to store the search query
+  const [searchQuery, setSearchQuery] = useState("");
 
-  // Load orders from localStorage when the component mounts
+  const navigate = useNavigate(); // For navigating programmatically
+
+  // Load orders from API
   useEffect(() => {
     const fetchOrders = async () => {
       try {
@@ -20,12 +22,10 @@ function OrderHome({ handleDelete, handleEdit }) {
             Authorization: `Bearer ${token}`,
           },
         });
-        //console.log(response)
-        if (response.status != 200) {
+        if (response.status !== 200) {
           throw new Error("Failed to fetch orders");
         }
         const data = await response.data;
-
         setOrders(data);
       } catch (error) {
         console.error("Error fetching orders:", error);
@@ -35,16 +35,19 @@ function OrderHome({ handleDelete, handleEdit }) {
     fetchOrders();
   }, []);
 
-  // Filter orders based on the search query (restaurant ID)
+  // Filter orders (excluding canceled ones and matching search)
   const filteredOrders = orders
     .filter((order) => order.status.toLowerCase() !== "canceled")
     .filter((order) =>
       order.restaurantId.toLowerCase().includes(searchQuery.toLowerCase())
     );
 
-  // Handle search query change
   const handleSearchChange = (e) => {
     setSearchQuery(e.target.value);
+  };
+
+  const handleBack = () => {
+    navigate("/customer/home"); // Navigate back to customer home page
   };
 
   return (
@@ -52,8 +55,25 @@ function OrderHome({ handleDelete, handleEdit }) {
       className="container"
       style={{ padding: "20px", backgroundColor: "#f8f9fa" }}
     >
+      {/* Back Button */}
+      <button
+        onClick={handleBack}
+        style={{
+          backgroundColor: "transparent",
+            border: "none",
+            color: "#333",
+            fontSize: "28px",
+            cursor: "pointer",
+            display: "flex",
+            alignItems: "center",
+        }}
+        
+      >
+        <FaHome />
+      </button>
+
       <h1 style={{ textAlign: "center", marginBottom: "20px", color: "#333" }}>
-        Place Your Order
+        All Orders
       </h1>
 
       {/* Search Bar */}
@@ -73,24 +93,35 @@ function OrderHome({ handleDelete, handleEdit }) {
         />
       </Form.Group>
 
-      {/* Add New Order Button */}
-      <Link to="/orders/new">
+      {/* Cart Button */}
+      <Link to="/customer/cart">
         <button
           className="mb-3"
           style={{
-            backgroundColor: "#a3d8f4",
-            borderColor: "#a3d8f4",
+            backgroundColor: "orange",
+            borderColor: "orange",
+            color: "white",
             fontSize: "16px",
             padding: "12px 20px",
             borderRadius: "4px",
             boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
-            transition: "background-color 0.3s ease",
-            width: "200px", // Fixed width
+            transition: "background-color 0.3s ease, transform 0.3s ease",
+            width: "200px",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            gap: "8px",
           }}
-          onMouseOver={(e) => (e.target.style.backgroundColor = "#7ec1e3")}
-          onMouseOut={(e) => (e.target.style.backgroundColor = "#a3d8f4")}
+          onMouseOver={(e) => {
+            e.target.style.backgroundColor = "orange";
+            e.target.style.transform = "scale(1.05)";
+          }}
+          onMouseOut={(e) => {
+            e.target.style.backgroundColor = "#ff9933";
+            e.target.style.transform = "scale(1)";
+          }}
         >
-          Add New Order
+          <FaShoppingCart /> Cart
         </button>
       </Link>
 
@@ -117,7 +148,7 @@ function OrderHome({ handleDelete, handleEdit }) {
           <tr>
             <th>Customer Name</th>
             <th>Restaurant Name</th>
-            <th>Food </th>
+            <th>Food</th>
             <th>Quantity</th>
             <th>Price</th>
             <th>Total Price</th>
@@ -128,13 +159,13 @@ function OrderHome({ handleDelete, handleEdit }) {
         <tbody style={{ textAlign: "center" }}>
           {filteredOrders.map((order) => (
             <React.Fragment key={order._id}>
-              {/* Main Order Row (no Order ID shown) */}
+              {/* Main Order Row */}
               <tr style={{ backgroundColor: "#f9f9f9", fontSize: "16px" }}>
                 <td rowSpan={order.items.length + 1}>{order.customerId}</td>
                 <td rowSpan={order.items.length + 1}>{order.restaurantId}</td>
               </tr>
 
-              {/* Map through the items array to display Food ID, Quantity, and Price */}
+              {/* Display Items */}
               {order.items.map((item, index) => (
                 <tr
                   key={`${order._id}-${item.foodId}-${index}`}
@@ -147,7 +178,6 @@ function OrderHome({ handleDelete, handleEdit }) {
                   <td>{item.price}</td>
                   <td>{order.totalPrice}</td>
                   <td>{order.deliveryAddress}</td>
-                  {/* Options Column with Edit, Delete, and Show Details Icons */}
                   <td>
                     <Link to={`/orders/edit/${order._id}`} onClick={() => {}}>
                       <FaEdit
@@ -161,7 +191,6 @@ function OrderHome({ handleDelete, handleEdit }) {
                     <Link to={`/orders/delete/${order._id}`} onClick={() => {}}>
                       <FaTrashAlt />
                     </Link>
-
                     <Link to={`/orders/details/${order._id}`}>
                       <FaEye style={{ color: "#17a2b8", cursor: "pointer" }} />
                     </Link>
@@ -176,4 +205,4 @@ function OrderHome({ handleDelete, handleEdit }) {
   );
 }
 
-export default OrderHome;
+export default OrderHome;    
