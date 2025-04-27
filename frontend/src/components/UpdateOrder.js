@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate, useParams } from "react-router-dom";
 import { Button, Form, Spinner } from "react-bootstrap";
-import { ArrowLeftCircle } from "react-bootstrap-icons"; // Back icon
+import { FaArrowLeft } from "react-icons/fa"; // Back icon
 
 function UpdateOrder({ addOrder }) {
   const [order, setOrder] = useState({
@@ -13,6 +13,7 @@ function UpdateOrder({ addOrder }) {
     deliveryAddress: "",
   });
   const [loading, setLoading] = useState(true);
+  const [errors, setErrors] = useState({});
   const { id } = useParams();
   const navigate = useNavigate();
 
@@ -42,6 +43,45 @@ function UpdateOrder({ addOrder }) {
     }
   }, [id]);
 
+  const validate = () => {
+    const newErrors = {};
+
+    const onlyLetters = /^[A-Za-z\s]+$/;
+    const addressRegex = /^[A-Za-z0-9\s,\.]+$/;
+
+    if (!order.customerId.trim() || !onlyLetters.test(order.customerId)) {
+      newErrors.customerId = "Customer name must contain only letters.";
+    }
+
+    if (!order.restaurantId.trim() || !onlyLetters.test(order.restaurantId)) {
+      newErrors.restaurantId = "Restaurant name must contain only letters.";
+    }
+
+    order.items.forEach((item, index) => {
+      if (!item.foodId.trim() || !onlyLetters.test(item.foodId)) {
+        newErrors[`foodId_${index}`] = "Food name must contain only letters.";
+      }
+      if (Number(item.quantity) <= 0) {
+        newErrors[`quantity_${index}`] = "Quantity must be a positive number.";
+      }
+      if (Number(item.price) <= 0) {
+        newErrors[`price_${index}`] = "Price must be a positive number.";
+      }
+    });
+
+    if (!order.deliveryAddress.trim()) {
+      newErrors.deliveryAddress = "Delivery address must not be empty.";
+    } else if (order.deliveryAddress.trim().length < 10) {
+      newErrors.deliveryAddress = "Delivery address must be at least 10 characters.";
+    } else if (!addressRegex.test(order.deliveryAddress)) {
+      newErrors.deliveryAddress =
+        "Delivery address can only contain letters, numbers, commas, dots, and spaces.";
+    }
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
   const handleItemChange = (index, e) => {
     const { name, value } = e.target;
     const newItems = [...order.items];
@@ -51,6 +91,10 @@ function UpdateOrder({ addOrder }) {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+
+    if (!validate()) {
+      return;
+    }
 
     const totalPrice = order.items.reduce(
       (total, item) => total + item.quantity * item.price,
@@ -67,6 +111,7 @@ function UpdateOrder({ addOrder }) {
       })
       .then((response) => {
         addOrder(response.data);
+        alert("Your Order Is Successfully Updated!");
         navigate("/orders");
       })
       .catch((error) => console.error("Error updating order:", error));
@@ -92,11 +137,17 @@ function UpdateOrder({ addOrder }) {
     padding: "10px",
     borderRadius: "5px",
     border: "1px solid #ccc",
+    marginBottom: "5px",
+  };
+
+  const errorStyle = {
+    color: "red",
+    fontSize: "14px",
     marginBottom: "10px",
   };
 
   const buttonStyle = {
-    backgroundColor: "#007bff",
+    backgroundColor: "#dd7f32",
     color: "#fff",
     border: "none",
     padding: "10px 20px",
@@ -128,13 +179,6 @@ function UpdateOrder({ addOrder }) {
     color: "#333",
   };
 
-  const topRightButtonStyle = {
-    width: "100%",
-    display: "flex",
-    justifyContent: "flex-end",
-    marginBottom: "10px",
-  };
-
   if (loading) {
     return (
       <div className="container" style={loadingStyle}>
@@ -145,21 +189,23 @@ function UpdateOrder({ addOrder }) {
   }
 
   return (
-    <div className="container" style={containerStyle}>
-      <div style={topRightButtonStyle}>
+    <div className="container" style={{ ...containerStyle, position: "relative" }}>
+      {/* Back Button */}
+      <div style={{ position: "absolute", top: "20px", left: "20px" }}>
         <Button
           variant="light"
           onClick={() => navigate("/orders")}
-          style={{ border: "none", background: "none", fontSize: "24px" }}
+          style={{ border: "none", background: "none", fontSize: "30px" }}
         >
-          <ArrowLeftCircle />
+          <FaArrowLeft />
         </Button>
       </div>
 
       <h2 style={headingStyle}>Edit Order</h2>
+
       <Form onSubmit={handleSubmit} style={formStyle}>
         <Form.Group style={formGroupStyle}>
-          <Form.Label>Customer ID</Form.Label>
+          <Form.Label>Customer Name</Form.Label>
           <Form.Control
             type="text"
             value={order.customerId}
@@ -167,10 +213,11 @@ function UpdateOrder({ addOrder }) {
             required
             style={formControlStyle}
           />
+          {errors.customerId && <div style={errorStyle}>{errors.customerId}</div>}
         </Form.Group>
 
         <Form.Group style={formGroupStyle}>
-          <Form.Label>Restaurant ID</Form.Label>
+          <Form.Label>Restaurant Name</Form.Label>
           <Form.Control
             type="text"
             value={order.restaurantId}
@@ -180,12 +227,13 @@ function UpdateOrder({ addOrder }) {
             required
             style={formControlStyle}
           />
+          {errors.restaurantId && <div style={errorStyle}>{errors.restaurantId}</div>}
         </Form.Group>
 
         {order.items.map((item, index) => (
           <div key={index}>
             <Form.Group style={formGroupStyle}>
-              <Form.Label>Food ID</Form.Label>
+              <Form.Label>Food</Form.Label>
               <Form.Control
                 type="text"
                 name="foodId"
@@ -194,6 +242,7 @@ function UpdateOrder({ addOrder }) {
                 required
                 style={formControlStyle}
               />
+              {errors[`foodId_${index}`] && <div style={errorStyle}>{errors[`foodId_${index}`]}</div>}
             </Form.Group>
             <Form.Group style={formGroupStyle}>
               <Form.Label>Quantity</Form.Label>
@@ -205,6 +254,7 @@ function UpdateOrder({ addOrder }) {
                 required
                 style={formControlStyle}
               />
+              {errors[`quantity_${index}`] && <div style={errorStyle}>{errors[`quantity_${index}`]}</div>}
             </Form.Group>
             <Form.Group style={formGroupStyle}>
               <Form.Label>Price</Form.Label>
@@ -216,6 +266,7 @@ function UpdateOrder({ addOrder }) {
                 required
                 style={formControlStyle}
               />
+              {errors[`price_${index}`] && <div style={errorStyle}>{errors[`price_${index}`]}</div>}
             </Form.Group>
           </div>
         ))}
@@ -231,6 +282,7 @@ function UpdateOrder({ addOrder }) {
             required
             style={formControlStyle}
           />
+          {errors.deliveryAddress && <div style={errorStyle}>{errors.deliveryAddress}</div>}
         </Form.Group>
 
         <Button type="submit" style={buttonStyle}>

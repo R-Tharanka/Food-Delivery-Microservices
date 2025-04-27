@@ -111,6 +111,9 @@ function OrderDetails() {
     doc.roundedRect(startX + 3, borderTop + 3, 164, borderHeight - 6, 4, 4); // inner border
 
     doc.save(`Order_${order._id}.pdf`);
+
+    // Show success alert after downloading
+    alert("Your order details report downloaded successfully!");
   };
 
   return (
@@ -142,7 +145,8 @@ function OrderDetails() {
             cursor: "pointer",
             padding: "10px",
             fontSize: "20px",
-            boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)"
+            boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)",
+            width: "50px"
           }}
         >
           <BsFilePdf size={24} color="#e60000" />
@@ -152,8 +156,8 @@ function OrderDetails() {
           Order Details
         </h2>
 
-        <p><strong>Customer ID:</strong> {order.customerId}</p>
-        <p><strong>Restaurant ID:</strong> {order.restaurantId}</p>
+        <p><strong>Customer Name:</strong> {order.customerId}</p>
+        <p><strong>Restaurant Name:</strong> {order.restaurantId}</p>
         <p><strong>Delivery Address:</strong> {order.deliveryAddress}</p>
         <p>
           <strong>Status:</strong>
@@ -178,7 +182,7 @@ function OrderDetails() {
               borderRadius: "6px",
               marginBottom: "10px"
             }}>
-              <p><strong>Food ID:</strong> {item.foodId}</p>
+              <p><strong>Food :</strong> {item.foodId}</p>
               <p><strong>Quantity:</strong> {item.quantity}</p>
               <p><strong>Price:</strong> Rs. {item.price}</p>
             </li>
