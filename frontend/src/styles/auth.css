@@ -1,0 +1,71 @@
+/* Container centers the form and gives a subtle background */
+.auth-form-container {
+    max-width: 400px;
+    margin: 60px auto;
+    padding: 32px;
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* Form title */
+.auth-form-container h2 {
+    margin-bottom: 24px;
+    color: #333333;
+    font-size: 1.5rem;
+    text-align: center;
+}
+
+/* Inputs all share the same style */
+.auth-form-container input {
+    width: 360px;
+    padding: 12px 14px;
+    margin-bottom: 16px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 1rem;
+    transition: border-color 0.2s;
+}
+
+.auth-form-container input:focus {
+    border-color: #5b8df9;
+    outline: none;
+}
+
+/* The primary button */
+.auth-form-container button {
+    width: 120px;
+    margin-top: 20px;
+    margin-bottom: 10px;
+    padding: 12px;
+    background: #5b8df9;
+    color: white;
+    font-size: 1.1rem;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.auth-form-container button:hover {
+    background: #4a76d8;
+}
+
+/* Error messages */
+.auth-form-container .error {
+    background: #ffe5e5;
+    color: #d8000c;
+    padding: 10px;
+    border-radius: 4px;
+    margin-bottom: 16px;
+    font-size: 0.95rem;
+    text-align: center;
+}
+
+.auth-alt {
+    margin-top: 16px;
+    text-align: center;
+    font-size: 0.95rem;
+    text-decoration: underline;
+}
