@@ -2,6 +2,7 @@ import React, { useEffect, useState, useContext } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { CartContext } from "../contexts/CartContext";
+import { FaHome } from "react-icons/fa"; // Import the Home icon
 
 function FoodItemList() {
   const { restaurantId } = useParams();
@@ -44,6 +45,24 @@ function FoodItemList() {
       background: "linear-gradient(to bottom right, #f0f4f8, #d9e2ec)", 
       minHeight: "100vh" 
     }}>
+      {/* Home Icon */}
+      <div style={{ marginBottom: "20px" }}>
+        <button
+          onClick={() => navigate("/customer/home")}
+          style={{
+            backgroundColor: "transparent",
+            border: "none",
+            color: "#333",
+            fontSize: "28px",
+            cursor: "pointer",
+            display: "flex",
+            alignItems: "center",
+          }}
+        >
+          <FaHome />
+        </button>
+      </div>
+
       <h2 style={{ 
         fontSize: "32px", 
         fontWeight: "bold", 
@@ -115,7 +134,6 @@ function FoodItemList() {
 
               {/* Favorite Button */}
               <div
-                title={favorites[food._id] ? "Remove from favorite" : "Add to favorite"}
                 onClick={() => toggleFavorite(food._id)}
                 style={{
                   position: "absolute",
@@ -135,7 +153,6 @@ function FoodItemList() {
 
               {/* Add to Cart Button */}
               <div
-                title="Add to cart"
                 onClick={() => handleAddToCart(food)}
                 style={{
                   position: "absolute",
