@@ -10,7 +10,7 @@ debug.log
 error.log
 
 # Environment variables
-.env
+# .env
 
 # Database files (if using SQLite or local storage)
 *.sqlite
