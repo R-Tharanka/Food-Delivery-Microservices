@@ -96,7 +96,8 @@ function Header() {
         </div>
       </motion.header>
 
-      <Sidebar isOpen={isSidebarOpen} onClose={() => setSidebarOpen(false)} />
+      <Sidebar isOpen={isSidebarOpen} onClose={() => setSidebarOpen(false)} isLoggedIn={isLoggedIn}
+        onLogout={handleLogout} />
     </>
   );
 }
