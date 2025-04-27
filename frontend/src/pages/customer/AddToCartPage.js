@@ -1,23 +1,29 @@
 import React, { useContext } from "react";
-import { useNavigate } from "react-router-dom"; // 🛣️ Import navigation hook
+import { useNavigate } from "react-router-dom";
 import { CartContext } from "../contexts/CartContext";
-import { FaArrowLeft } from "react-icons/fa"; // ⬅️ Import Back arrow icon
+import { FaArrowLeft } from "react-icons/fa";
 
 function AddToCartPage() {
   const { cartItems, removeFromCart } = useContext(CartContext);
-  const navigate = useNavigate(); // 🛣️ Create navigate function
+  const navigate = useNavigate();
 
   const handleProceed = () => {
-    navigate("/orders/new"); // Navigate to OrderHome page
+    navigate("/orders/new");
   };
 
   const handleBackToFoodList = () => {
-    navigate("/customer/home"); // Navigate back to FoodItemList page
+    navigate("/customer/home");
   };
 
   return (
-    <div style={{ padding: "30px", backgroundColor: "#f0f2f5", minHeight: "100vh", position: "relative" }}>
-      
+    <div
+      style={{
+        padding: "30px",
+        backgroundColor: "#f0f2f5",
+        minHeight: "100vh",
+        position: "relative",
+      }}
+    >
       {/* Back Arrow Icon Button */}
       <div style={{ marginBottom: "20px" }}>
         <button
@@ -36,14 +42,31 @@ function AddToCartPage() {
         </button>
       </div>
 
-      <h2 style={{ 
-        fontSize: "32px", 
-        fontWeight: "bold", 
-        marginBottom: "30px", 
-        textAlign: "center",
-        color: "#333"
-      }}>
-        🛒 Review Your Order
+      <h2
+        style={{
+          fontSize: "36px",
+          fontWeight: "700",
+          marginBottom: "30px",
+          textAlign: "center",
+          color: "#222",
+          background: "linear-gradient(90deg, #f8f8f8, #e0e0e0)",
+          padding: "15px 20px",
+          borderRadius: "12px",
+          boxShadow: "0 4px 8px rgba(0,0,0,0.1)",
+          letterSpacing: "1px",
+          position: "relative",
+        }}
+      >
+        🛒 Your Shopping Cart
+        <div
+          style={{
+            height: "4px",
+            width: "80px",
+            backgroundColor: "#ff7f50",
+            margin: "10px auto 0",
+            borderRadius: "2px",
+          }}
+        ></div>
       </h2>
 
       {cartItems.length === 0 ? (
@@ -73,15 +96,19 @@ function AddToCartPage() {
               }}
               onMouseEnter={(e) => {
                 e.currentTarget.style.transform = "translateY(-8px)";
-                e.currentTarget.style.boxShadow = "0 8px 20px rgba(0, 0, 0, 0.2)";
+                e.currentTarget.style.boxShadow =
+                  "0 8px 20px rgba(0, 0, 0, 0.2)";
               }}
               onMouseLeave={(e) => {
                 e.currentTarget.style.transform = "translateY(0)";
-                e.currentTarget.style.boxShadow = "0 6px 16px rgba(0, 0, 0, 0.1)";
+                e.currentTarget.style.boxShadow =
+                  "0 6px 16px rgba(0, 0, 0, 0.1)";
               }}
             >
               <img
-                src={item.image || "https://placehold.co/300x200?text=Food+Image"}
+                src={
+                  item.image || "https://placehold.co/300x200?text=Food+Image"
+                }
                 alt={item.name}
                 style={{
                   width: "100%",
@@ -90,13 +117,32 @@ function AddToCartPage() {
                 }}
               />
               <div style={{ padding: "16px" }}>
-                <h5 style={{ fontSize: "20px", fontWeight: "600", marginBottom: "8px" }}>
+                <h5
+                  style={{
+                    fontSize: "20px",
+                    fontWeight: "600",
+                    marginBottom: "8px",
+                  }}
+                >
                   {item.name}
                 </h5>
-                <p style={{ fontSize: "14px", color: "#666", marginBottom: "10px" }}>
+                <p
+                  style={{
+                    fontSize: "14px",
+                    color: "#666",
+                    marginBottom: "10px",
+                  }}
+                >
                   {item.description}
                 </p>
-                <p style={{ fontSize: "16px", fontWeight: "bold", color: "#333", marginBottom: "6px" }}>
+                <p
+                  style={{
+                    fontSize: "16px",
+                    fontWeight: "bold",
+                    color: "#333",
+                    marginBottom: "6px",
+                  }}
+                >
                   Rs. {item.price}
                 </p>
                 <p style={{ fontSize: "13px", color: "#999" }}>
