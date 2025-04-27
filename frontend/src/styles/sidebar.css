@@ -15,15 +15,17 @@
   position: fixed;
   top: 0;
   left: 0;
-  width: 300px;
+  width: 260px;
   height: 100%;
   background-color: var(--color-white);
   box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
   z-index: 1001;
   display: flex;
   flex-direction: column;
+  align-items: center;
   padding: 20px;
-  overflow-y: auto; /* Enable scrolling for overflowing content */
+  overflow-y: auto;
+  /* Enable scrolling for overflowing content */
 }
 
 .sidebar-profile {
@@ -51,6 +53,14 @@
   text-decoration: none;
 }
 
+.sidebar-links, .sidebar-actions {
+  width: 100%;
+  margin-top: 40px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
 .sidebar-links a,
 .sidebar-actions a {
   display: block;
@@ -65,10 +75,12 @@
   color: var(--color-orange);
 }
 
-.signout-button {
-  margin-top: auto;
+.side_bar-signout-button {
+  position: fixed;
+  bottom: 16px;
+  width: 100px;
   padding: 10px;
-  background-color: var(--color-orange);
+  background-color: var(--color-black);
   color: var(--color-white);
   border: none;
   border-radius: 5px;
@@ -76,12 +88,12 @@
   font-size: 16px;
 }
 
-.signout-button:hover {
-  background-color: var(--color-green);
+.side_bar-signout-button:hover {
+  background-color: var(--color-orange);
 }
 
-.login-button,
-.signup-button {
+.side_bar-login-button,
+.side_bar-signup-button {
   margin: 10px 0;
   padding: 10px;
   background-color: var(--color-black);
@@ -92,7 +104,7 @@
   font-size: 16px;
 }
 
-.login-button:hover,
-.signup-button:hover {
+.side_bar-login-button:hover,
+.side_bar-signup-button:hover {
   background-color: var(--color-orange);
 }

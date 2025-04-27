@@ -7,7 +7,7 @@ const { sendSmsNotification } = require("../utils/twilioService"); // Import Twi
 
 router.post("/process", async (req, res) => {
   try {
-    const { orderId, userId, amount, currency, email, phone } = req.body; // Use `phone` instead of `phoneNumber`
+    const { orderId, userId, amount, currency, email, phone } = req.body; // Use `phone` instead of `phoneNumber` 
 
     // Validate required fields
     if (!phone) {
