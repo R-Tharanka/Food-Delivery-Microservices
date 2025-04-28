@@ -2,7 +2,7 @@ import React, { useEffect, useState, useContext } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { CartContext } from "../contexts/CartContext";
-import { FaHome } from "react-icons/fa"; // Import the Home icon
+import { FaHome } from "react-icons/fa"; 
 
 function FoodItemList() {
   const { restaurantId } = useParams();
@@ -10,13 +10,16 @@ function FoodItemList() {
   const { addToCart } = useContext(CartContext);
 
   const [foods, setFoods] = useState([]);
-  const [error, setError] = useState('');
+  const [restaurantName, setRestaurantName] = useState(""); 
+  const [error, setError] = useState("");
   const [favorites, setFavorites] = useState({});
 
   useEffect(() => {
     const fetchRestaurantFoods = async () => {
       try {
-        const res = await axios.get(`http://localhost:5002/api/food-items/restaurant/${restaurantId}`);
+        const res = await axios.get(
+          `http://localhost:5002/api/food-items/restaurant/${restaurantId}`
+        );
         setFoods(res.data);
       } catch (err) {
         console.error(err);
@@ -24,7 +27,25 @@ function FoodItemList() {
       }
     };
 
+    const fetchRestaurantDetails = async () => {
+      try {
+        const res = await axios.get(
+          `http://localhost:5001/api/superadmin/restaurant/${restaurantId}`,
+          {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("token")}`,
+            },
+          }
+        );
+        setRestaurantName(res.data.name);
+      } catch (err) {
+        console.error(err);
+        setRestaurantName("PAAN PAAN");
+      }
+    };
+
     fetchRestaurantFoods();
+    fetchRestaurantDetails(); //  Fetch restaurant name
   }, [restaurantId]);
 
   const toggleFavorite = (foodId) => {
@@ -36,15 +57,17 @@ function FoodItemList() {
 
   const handleAddToCart = (food) => {
     addToCart(food);
-    navigate('/customer/cart');
+    navigate("/customer/cart");
   };
 
   return (
-    <div style={{ 
-      padding: "30px", 
-      background: "linear-gradient(to bottom right, #f0f4f8, #d9e2ec)", 
-      minHeight: "100vh" 
-    }}>
+    <div
+      style={{
+        padding: "30px",
+        background: "linear-gradient(to bottom right, #f0f4f8, #d9e2ec)",
+        minHeight: "100vh",
+      }}
+    >
       {/* Home Icon */}
       <div style={{ marginBottom: "20px" }}>
         <button
@@ -63,17 +86,43 @@ function FoodItemList() {
         </button>
       </div>
 
-      <h2 style={{ 
-        fontSize: "32px", 
-        fontWeight: "bold", 
-        marginBottom: "30px", 
-        textAlign: "center", 
-        color: "#333",
-      }}>
-        🍔 Foods from Selected Restaurant
+      <h2
+        style={{
+          fontSize: "40px",
+          fontWeight: "800",
+          marginBottom: "30px",
+          textAlign: "center",
+          color: "#2c3e50",
+          background: "linear-gradient(90deg, #ffecd2 0%, #fcb69f 100%)",
+          padding: "20px 30px",
+          borderRadius: "16px",
+          boxShadow: "0 8px 20px rgba(0,0,0,0.15)",
+          letterSpacing: "2px",
+          textTransform: "uppercase",
+          position: "relative",
+          overflow: "hidden",
+        }}
+      >
+        🍴 {restaurantName}
       </h2>
 
-      {error && <p style={{ color: "red", textAlign: "center", fontWeight: "bold" }}>{error}</p>}
+      <h3
+        style={{
+          fontSize: "24px",
+          fontWeight: "bold",
+          marginBottom: "30px",
+          textAlign: "center",
+          color: "#555",
+        }}
+      >
+        🍔 Available Foods
+      </h3>
+
+      {error && (
+        <p style={{ color: "red", textAlign: "center", fontWeight: "bold" }}>
+          {error}
+        </p>
+      )}
 
       <div
         style={{
@@ -84,7 +133,9 @@ function FoodItemList() {
         }}
       >
         {foods.length === 0 ? (
-          <p style={{ fontSize: "20px", color: "#333" }}>No food items available for this restaurant.</p>
+          <p style={{ fontSize: "20px", color: "#333" }}>
+            No food items available for this restaurant.
+          </p>
         ) : (
           foods.map((food) => (
             <div
@@ -101,15 +152,19 @@ function FoodItemList() {
               }}
               onMouseEnter={(e) => {
                 e.currentTarget.style.transform = "scale(1.02)";
-                e.currentTarget.style.boxShadow = "0 8px 20px rgba(0, 0, 0, 0.15)";
+                e.currentTarget.style.boxShadow =
+                  "0 8px 20px rgba(0, 0, 0, 0.15)";
               }}
               onMouseLeave={(e) => {
                 e.currentTarget.style.transform = "scale(1)";
-                e.currentTarget.style.boxShadow = "0 4px 12px rgba(0, 0, 0, 0.1)";
+                e.currentTarget.style.boxShadow =
+                  "0 4px 12px rgba(0, 0, 0, 0.1)";
               }}
             >
               <img
-                src={food.image || "https://placehold.co/300x180?text=Food+Image"}
+                src={
+                  food.image || "https://placehold.co/300x180?text=Food+Image"
+                }
                 alt={food.name}
                 style={{
                   width: "100%",
@@ -118,16 +173,41 @@ function FoodItemList() {
                 }}
               />
               <div style={{ padding: "16px" }}>
-                <h5 style={{ fontSize: "18px", fontWeight: "600", color: "#222", marginBottom: "8px" }}>
+                <h5
+                  style={{
+                    fontSize: "18px",
+                    fontWeight: "600",
+                    color: "#222",
+                    marginBottom: "8px",
+                  }}
+                >
                   {food.name}
                 </h5>
-                <p style={{ fontSize: "14px", color: "#666", marginBottom: "8px" }}>
+                <p
+                  style={{
+                    fontSize: "14px",
+                    color: "#666",
+                    marginBottom: "8px",
+                  }}
+                >
                   {food.description}
                 </p>
-                <p style={{ fontWeight: "bold", fontSize: "16px", color: "#000" }}>
+                <p
+                  style={{
+                    fontWeight: "bold",
+                    fontSize: "16px",
+                    color: "#000",
+                  }}
+                >
                   Rs. {food.price}
                 </p>
-                <p style={{ fontStyle: "italic", fontSize: "13px", color: "#777" }}>
+                <p
+                  style={{
+                    fontStyle: "italic",
+                    fontSize: "13px",
+                    color: "#777",
+                  }}
+                >
                   Category: {food.category}
                 </p>
               </div>
@@ -171,8 +251,12 @@ function FoodItemList() {
                   cursor: "pointer",
                   transition: "background-color 0.3s",
                 }}
-                onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = "#ff8533")}
-                onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = "#ff6600")}
+                onMouseEnter={(e) =>
+                  (e.currentTarget.style.backgroundColor = "#ff8533")
+                }
+                onMouseLeave={(e) =>
+                  (e.currentTarget.style.backgroundColor = "#ff6600")
+                }
               >
                 +
               </div>
