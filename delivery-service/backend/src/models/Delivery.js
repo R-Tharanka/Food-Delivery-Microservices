@@ -1,31 +1,63 @@
 import mongoose from "mongoose";
 
-const deliverySchema = new mongoose.Schema(
-  {
-    orderId: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "Order",
-      required: true,
-    },
-    driverId: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "Driver",
-    },
-    status: {
-      type: String,
-      enum: ["Pending", "Assigned", "In Transit", "Delivered"],
-      default: "Pending",
-    },
-    deliveryAddress: {
-      type: String,
-      required: true,
-    },
-    estimatedTime: {
-      type: Number, // In minutes
-      default: 30,
-    },
+const deliverySchema = new mongoose.Schema({
+  driver: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Driver",
+    required: true
   },
-  { timestamps: true }
-);
+  orderId: {
+    type: String,
+    required: true
+  },
+  customerId: {
+    type: String,
+    required: true
+  },
+  // Store the human-readable address separately
+  pickupAddressString: {
+    type: String,
+    required: true
+  },
+  // GeoJSON format for location (must be exactly this structure)
+  pickupLocation: {
+    type: {
+      type: String,
+      enum: ["Point"],
+      default: "Point",
+      required: true
+    },
+    coordinates: {
+      type: [Number],
+      required: true
+    }
+  },
+  deliveryAddressString: {
+    type: String,
+    required: true
+  },
+  deliveryLocation: {
+    type: {
+      type: String,
+      enum: ["Point"],
+      default: "Point",
+      required: true
+    },
+    coordinates: {
+      type: [Number],
+      required: true
+    }
+  },
+  status: {
+    type: String,
+    enum: ["assigned", "Picked-up", "Delivered"],
+    default: "assigned"
+  }
+}, { timestamps: true });
 
-export default mongoose.model("Delivery", deliverySchema);
+// Create the geospatial index on the proper GeoJSON field
+deliverySchema.index({ "pickupLocation": "2dsphere" });
+
+const Delivery = mongoose.model("Delivery", deliverySchema);
+
+export default Delivery;
