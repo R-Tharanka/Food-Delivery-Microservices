@@ -1,7 +1,13 @@
 import React, { useEffect, useState } from "react";
-import { Table, Form } from "react-bootstrap"; // Import Table for displaying the order data and Form for search input
-import { Link, useNavigate } from "react-router-dom"; // Import Link for navigation and useNavigate for programmatic navigation
-import { FaEdit, FaTrashAlt, FaEye, FaShoppingCart, FaHome } from "react-icons/fa"; // Import icons
+import { Table, Form } from "react-bootstrap";
+import { Link, useNavigate } from "react-router-dom";
+import {
+  FaEdit,
+  FaTrashAlt,
+  FaEye,
+  FaShoppingCart,
+  FaHome,
+} from "react-icons/fa";
 import axios from "axios";
 
 const token =
@@ -11,9 +17,8 @@ function OrderHome({ handleDelete, handleEdit }) {
   const [orders, setOrders] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
 
-  const navigate = useNavigate(); // For navigating programmatically
+  const navigate = useNavigate();
 
-  // Load orders from API
   useEffect(() => {
     const fetchOrders = async () => {
       try {
@@ -35,7 +40,6 @@ function OrderHome({ handleDelete, handleEdit }) {
     fetchOrders();
   }, []);
 
-  // Filter orders (excluding canceled ones and matching search)
   const filteredOrders = orders
     .filter((order) => order.status.toLowerCase() !== "canceled")
     .filter((order) =>
@@ -47,7 +51,7 @@ function OrderHome({ handleDelete, handleEdit }) {
   };
 
   const handleBack = () => {
-    navigate("/customer/home"); // Navigate back to customer home page
+    navigate("/customer/home");
   };
 
   return (
@@ -60,14 +64,13 @@ function OrderHome({ handleDelete, handleEdit }) {
         onClick={handleBack}
         style={{
           backgroundColor: "transparent",
-            border: "none",
-            color: "#333",
-            fontSize: "28px",
-            cursor: "pointer",
-            display: "flex",
-            alignItems: "center",
+          border: "none",
+          color: "#333",
+          fontSize: "28px",
+          cursor: "pointer",
+          display: "flex",
+          alignItems: "center",
         }}
-        
       >
         <FaHome />
       </button>
@@ -88,7 +91,7 @@ function OrderHome({ handleDelete, handleEdit }) {
             fontSize: "16px",
             borderRadius: "4px",
             border: "1px solid #ddd",
-            width: "400px"
+            width: "400px",
           }}
         />
       </Form.Group>
@@ -127,7 +130,6 @@ function OrderHome({ handleDelete, handleEdit }) {
 
       {/* Orders Table */}
       <Table
-        striped
         bordered
         hover
         style={{
@@ -139,7 +141,7 @@ function OrderHome({ handleDelete, handleEdit }) {
       >
         <thead
           style={{
-            backgroundColor: "#a3d8f4",
+            backgroundColor: "#333333", 
             color: "#fff",
             textAlign: "center",
             fontWeight: "bold",
@@ -156,45 +158,64 @@ function OrderHome({ handleDelete, handleEdit }) {
             <th>Options</th>
           </tr>
         </thead>
-        <tbody style={{ textAlign: "center" }}>
+        <tbody
+          style={{
+            backgroundColor: "#f9f9f9", // Light gray background
+            textAlign: "center",
+            fontSize: "16px",
+          }}
+        >
           {filteredOrders.map((order) => (
             <React.Fragment key={order._id}>
-              {/* Main Order Row */}
-              <tr style={{ backgroundColor: "#f9f9f9", fontSize: "16px" }}>
-                <td rowSpan={order.items.length + 1}>{order.customerId}</td>
-                <td rowSpan={order.items.length + 1}>{order.restaurantId}</td>
+              {/* First Row with first item and row spans */}
+              <tr style={{ backgroundColor: "#f9f9f9" }}>
+                <td rowSpan={order.items.length}>{order.customerId}</td>
+                <td rowSpan={order.items.length}>{order.restaurantId}</td>
+                <td>{order.items[0].foodId}</td>
+                <td>{order.items[0].quantity}</td>
+                <td>{order.items[0].price}</td>
+                <td rowSpan={order.items.length} style={{ verticalAlign: "middle" }}>
+                  {order.totalPrice}
+                </td>
+                <td rowSpan={order.items.length} style={{ verticalAlign: "middle" }}>
+                  {order.deliveryAddress}
+                </td>
+                <td rowSpan={order.items.length} style={{ verticalAlign: "middle" }}>
+                  <Link to={`/orders/edit/${order._id}`}>
+                    <FaEdit
+                      style={{
+                        color: "#ffc107",
+                        cursor: "pointer",
+                        marginRight: "10px",
+                      }}
+                    />
+                  </Link>
+                  <Link to={`/orders/delete/${order._id}`}>
+                    <FaTrashAlt
+                      style={{
+                        color: "red",
+                        cursor: "pointer",
+                        marginRight: "10px",
+                      }}
+                    />
+                  </Link>
+                  <Link to={`/orders/details/${order._id}`}>
+                    <FaEye
+                      style={{
+                        color: "#17a2b8",
+                        cursor: "pointer",
+                      }}
+                    />
+                  </Link>
+                </td>
               </tr>
 
-              {/* Display Items */}
-              {order.items.map((item, index) => (
-                <tr
-                  key={`${order._id}-${item.foodId}-${index}`}
-                  style={{
-                    backgroundColor: index % 2 === 0 ? "#ffffff" : "#f2f2f2",
-                  }}
-                >
+              {/* Remaining items */}
+              {order.items.slice(1).map((item, index) => (
+                <tr key={`${order._id}-${item.foodId}-${index}`}>
                   <td>{item.foodId}</td>
                   <td>{item.quantity}</td>
                   <td>{item.price}</td>
-                  <td>{order.totalPrice}</td>
-                  <td>{order.deliveryAddress}</td>
-                  <td>
-                    <Link to={`/orders/edit/${order._id}`} onClick={() => {}}>
-                      <FaEdit
-                        style={{
-                          color: "#ffc107",
-                          cursor: "pointer",
-                          marginRight: "10px",
-                        }}
-                      />
-                    </Link>
-                    <Link to={`/orders/delete/${order._id}`} onClick={() => {}}>
-                      <FaTrashAlt />
-                    </Link>
-                    <Link to={`/orders/details/${order._id}`}>
-                      <FaEye style={{ color: "#17a2b8", cursor: "pointer" }} />
-                    </Link>
-                  </td>
                 </tr>
               ))}
             </React.Fragment>
@@ -205,4 +226,4 @@ function OrderHome({ handleDelete, handleEdit }) {
   );
 }
 
-export default OrderHome;    
+export default OrderHome;
