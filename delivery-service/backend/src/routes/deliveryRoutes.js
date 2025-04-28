@@ -1,15 +1,15 @@
 import express from "express";
-import { assignDriver } from "../services/deliveryService.js";
+import { createDelivery, getDriverDeliveries ,getDelivery,updateDeliveryStatus,deleteDelivery,getDeliveryByOrderId} from "../controllers/deliveryController.js";
+import authMiddleware from "../middleware/authMiddleware.js";
+
 
 const router = express.Router();
 
-router.post("/assign/:orderId", async (req, res) => {
-  try {
-    const result = await assignDriver(req.params.orderId);
-    res.status(200).json(result);
-  } catch (error) {
-    res.status(500).json({ message: "Error assigning driver", error });
-  }
-});
+router.post("/create", authMiddleware, createDelivery);
+router.get("/", authMiddleware, getDriverDeliveries);
+router.get("/:id", authMiddleware, getDelivery);
+router.put("/:id/status", authMiddleware, updateDeliveryStatus);
+router.delete("/:id", authMiddleware, deleteDelivery); 
+router.get("/order/:orderId", authMiddleware, getDeliveryByOrderId);
 
 export default router;
