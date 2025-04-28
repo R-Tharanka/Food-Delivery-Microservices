@@ -1,21 +1,21 @@
+// src/pages/DriverSocketDashboard.js
 import { useEffect, useState } from "react";
 import { io } from "socket.io-client";
 
 const socket = io("http://localhost:5003"); // Connect to backend WebSocket
 
 export default function DriverSocketDashboard() {
-  const [orderId, setOrderId] = useState("123"); // Hardcoded for now
-  const [lat, setLat] = useState(6.9271);  // Colombo default lat
-  const [lng, setLng] = useState(79.8612); // Colombo default lng
+  const [orderId, setOrderId] = useState("123"); // Default Order ID
+  const [lat, setLat] = useState(6.9271);  // Starting lat (Colombo)
+  const [lng, setLng] = useState(79.8612); // Starting lng (Colombo)
   const [sending, setSending] = useState(false);
 
-  // Send location updates every 3 seconds
   useEffect(() => {
     let interval;
     if (sending) {
       interval = setInterval(() => {
-        const newLat = lat + (Math.random() * 0.001); // Slight random movement
-        const newLng = lng + (Math.random() * 0.001);
+        const newLat = lat + (Math.random() - 0.5) * 0.0005; // Random small move
+        const newLng = lng + (Math.random() - 0.5) * 0.0005;
 
         socket.emit("location-update", {
           orderId,
@@ -23,10 +23,10 @@ export default function DriverSocketDashboard() {
           lng: newLng
         });
 
-        console.log("📍 Sending new location...", newLat, newLng);
+        console.log("📍 Sending location:", newLat, newLng);
         setLat(newLat);
         setLng(newLng);
-      }, 3000);
+      }, 2000); // send every 2 sec
     }
 
     return () => clearInterval(interval);
@@ -42,7 +42,14 @@ export default function DriverSocketDashboard() {
         style={{ margin: "10px", padding: "8px" }}
       />
       <br />
-      <button onClick={() => setSending(!sending)}>
+      <button onClick={() => setSending(!sending)} style={{
+        padding: "10px 20px",
+        backgroundColor: sending ? "#f44336" : "#4CAF50",
+        color: "white",
+        border: "none",
+        borderRadius: "5px",
+        cursor: "pointer"
+      }}>
         {sending ? "🛑 Stop Sending" : "📡 Start Sending Location"}
       </button>
     </div>
