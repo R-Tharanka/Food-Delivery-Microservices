@@ -1,2 +1,2 @@
-- **GitHub Repo**: [https://github.com/R-Tharanka/Food-Delivery-Microservices.git](https://github.com/R-Tharanka/Food-Delivery-Microservices.git)
-- **Demo Video**: [https://youtu.be/YourDemoLink](https://youtu.be/YourDemoLink)
+- GitHub Repo: https://github.com/R-Tharanka/Food-Delivery-Microservices.git
+- Youtube Video: https://youtu.be/0Y53-xwQHyc
