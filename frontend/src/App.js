@@ -66,7 +66,7 @@ function App() {
           <Route path="/auth/register" element={<AuthRegister />} />
           <Route path="/customer/profile" element={<CustomerProfile />} />
 
-            {/* payment management */}
+          {/* payment management */}
           <Route path="/checkout" element={<Checkout />} />
 
           {/* order management */}
