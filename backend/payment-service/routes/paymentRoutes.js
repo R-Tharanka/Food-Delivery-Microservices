@@ -7,14 +7,14 @@ const { sendSmsNotification } = require("../utils/twilioService"); // Import Twi
 
 router.post("/process", async (req, res) => {
   try {
-    const { orderId, userId, amount, currency, email, phone } = req.body; // Use `phone` instead of `phoneNumber` 
+    const { orderId, userId, amount, currency, email, phone } = req.body; 
 
     // Validate required fields
     if (!phone) {
       return res.status(400).json({ error: "Phone number is required." });
     }
 
-    console.log(`⏳ Processing payment request for order ${orderId}`);
+    console.log(`Processing payment request for order ${orderId}`);
 
     // Check if a payment record already exists for this order.
     let payment = await Payment.findOne({ orderId });
@@ -58,7 +58,7 @@ router.post("/process", async (req, res) => {
       email,
     });
     await payment.save();
-    console.log("💾 Stored Payment Record:", payment);
+    console.log("Stored Payment Record:", payment);
 
     // Send SMS notification
     // const message = `Your payment of $${orderId} has been processed successfully.`;

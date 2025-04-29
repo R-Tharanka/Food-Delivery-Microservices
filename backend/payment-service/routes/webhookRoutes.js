@@ -7,7 +7,7 @@ const { sendEmailNotification } = require("../utils/emailService"); // Import th
 require("dotenv").config();
 
 router.post("/", express.raw({ type: "application/json" }), async (req, res) => {
-    console.log("🔔 Webhook received");
+    console.log("Webhook received");
     const sig = req.headers["stripe-signature"];
     let event;
 
@@ -23,7 +23,7 @@ router.post("/", express.raw({ type: "application/json" }), async (req, res) => 
     if (event.type === "payment_intent.succeeded" || event.type === "payment_intent.payment_failed") {
         paymentIntentId = event.data.object.id;
     } else {
-        console.log(`ℹ️ Unhandled event type: ${event.type}`);
+        console.log(`Unhandled event type: ${event.type}`);
         return res.json({ received: true });
     }
 
@@ -47,7 +47,7 @@ router.post("/", express.raw({ type: "application/json" }), async (req, res) => 
             console.warn(`⚠️ No payment record found for orderId: ${orderId} or PaymentIntent: ${paymentIntentId}`);
             return res.status(404).json({ error: "Payment record not found" });
         }
-        console.log(`ℹ️ Found payment record for order ${payment.orderId}, current status: ${payment.status}`);
+        console.log(`Found payment record for order ${payment.orderId}, current status: ${payment.status}`);
 
         const customerPhone = payment.phone;
         const customerEmail = payment.email; // Ensure your Payment model includes an email field (if not, add it)
@@ -127,7 +127,7 @@ router.post("/", express.raw({ type: "application/json" }), async (req, res) => 
                 }
             }
         } else {
-            console.log(`ℹ️ Payment for Order ${payment.orderId} already updated to ${payment.status}.`);
+            console.log(`Payment for Order ${payment.orderId} already updated to ${payment.status}.`);
         }
     } catch (err) {
         console.error("❌ Error updating payment status in DB:", err.message);
