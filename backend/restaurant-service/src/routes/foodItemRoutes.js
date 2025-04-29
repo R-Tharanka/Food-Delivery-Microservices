@@ -124,4 +124,34 @@ router.put('/availability/:id', authMiddleware, async (req, res) => {
   }
 });
 
+// Get all food items (Public)
+router.get('/all', async (req, res) => {
+  try {
+    const foodItems = await FoodItem.find().populate('restaurant', 'name location'); // Populate restaurant details if needed
+    res.status(200).json(foodItems);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: 'Server Error' });
+  }
+});
+
+// Get food items by restaurant (Public)
+router.get('/restaurant/:restaurantId', async (req, res) => {
+  try {
+    const { restaurantId } = req.params;
+
+    // Find food items for the given restaurant ID
+    const foodItems = await FoodItem.find({ restaurant: restaurantId }).populate('restaurant', 'name location');
+
+    if (!foodItems.length) {
+      return res.status(404).json({ message: 'No food items found for this restaurant' });
+    }
+
+    res.status(200).json(foodItems);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: 'Server Error' });
+  }
+});
+
 export default router;

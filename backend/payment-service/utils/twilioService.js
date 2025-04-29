@@ -18,7 +18,7 @@ const sendSmsNotification = async (phoneNumber, message) => {
       from: twilioPhoneNumber,
       to: phoneNumber,
     });
-    console.log(`📩 SMS sent to ${phoneNumber}: ${response.sid}`);
+    console.log(`SMS sent to ${phoneNumber}: ${response.sid}`);
   } catch (error) {
     console.error("❌ Error sending SMS:", error.message);
   }

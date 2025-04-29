@@ -83,10 +83,10 @@ function Header() {
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.15 }}
                 >
-                  <Link to="/customer/profile" className="dropdown-item" onClick={() => setShowDropdown(false)}>
+                  <Link to="/customer/profile" className="header_dropdown-item" onClick={() => setShowDropdown(false)}>
                     My Profile
                   </Link>
-                  <div className="dropdown-item logout" onClick={handleLogout}>
+                  <div className="header_dropdown-item logout" onClick={handleLogout}>
                     Logout
                   </div>
                 </motion.div>
