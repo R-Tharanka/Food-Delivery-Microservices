@@ -58,6 +58,7 @@
 }
 
 .footer-column button {
+  width: 120px;
   background-color: #ff6f61;
   color: white;
   border: none;
