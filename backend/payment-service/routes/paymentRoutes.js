@@ -19,7 +19,7 @@ router.post("/process", async (req, res) => {
     // Check if a payment record already exists for this order.
     let payment = await Payment.findOne({ orderId });
     if (payment && payment.stripeClientSecret) {
-      console.log("🔍 Existing Payment Found:", payment);
+      console.log("Existing Payment Found:", payment);
       if (payment.status === "Paid") {
         return res.status(200).json({
           message: "✅ This order has already been paid successfully.",

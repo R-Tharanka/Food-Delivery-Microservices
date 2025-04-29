@@ -21,7 +21,7 @@ const sendEmailNotification = async (to, subject, html, text) => {
       html,
     });
     console.log("Resend API Response:", data);
-    console.log(`📧 Email sent to ${to}: ${data?.id || "No ID returned"}`);
+    console.log(`Email sent to ${to}: ${data?.id || "No ID returned"}`);
     return data;
   } catch (error) {
     console.error("❌ Error sending email:", error.message);
