@@ -50,7 +50,7 @@ const deliverySchema = new mongoose.Schema({
   },
   status: {
     type: String,
-    enum: ["assigned", "Picked-up", "Delivered"],
+    enum: ["assigned", "Picked-up", "To be delivered","Delivered"],
     default: "assigned"
   }
 }, { timestamps: true });

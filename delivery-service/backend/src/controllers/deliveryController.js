@@ -86,13 +86,13 @@ export const updateDeliveryStatus = async (req, res) => {
     const { status } = req.body;
     const deliveryId = req.params.id;
 
-    // Check if status is valid
-    if (!["Picked-up", "Delivered"].includes(status)) {
+    // ✅ Updated to include all valid statuses
+    const validStatuses = ["To be delivered", "Picked-up", "Delivered"];
+    if (!validStatuses.includes(status)) {
       return res.status(400).json({ success: false, message: "Invalid status" });
     }
 
     const delivery = await Delivery.findById(deliveryId);
-
     if (!delivery) {
       return res.status(404).json({ success: false, message: "Delivery not found" });
     }
@@ -112,6 +112,7 @@ export const updateDeliveryStatus = async (req, res) => {
     res.status(500).json({ success: false, message: "Failed to update delivery status" });
   }
 };
+
 // New Controller to get Delivery by OrderID
 export const getDeliveryByOrderId = async (req, res) => {
   try {

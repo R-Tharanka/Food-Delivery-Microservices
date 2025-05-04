@@ -1,8 +1,7 @@
-// src/pages/DeliveryDetails.js
 import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
-import "./DeliveryDetails.css"; // ✅ Importing the CSS
+import "./DeliveryDetails.css";
 
 export default function DeliveryDetails() {
   const { id } = useParams();
@@ -32,9 +31,11 @@ export default function DeliveryDetails() {
   const handleUpdateStatus = async (newStatus) => {
     try {
       const token = localStorage.getItem("driverToken");
-      const res = await axios.put(`http://localhost:5003/api/delivery/${id}/status`, { status: newStatus }, {
-        headers: { Authorization: token }
-      });
+      const res = await axios.put(
+        `http://localhost:5003/api/delivery/${id}/status`,
+        { status: newStatus },
+        { headers: { Authorization: token } }
+      );
       alert(res.data.message);
       fetchDelivery(); // Refresh after update
     } catch (err) {
@@ -56,12 +57,21 @@ export default function DeliveryDetails() {
         <p><strong>Customer ID:</strong> {delivery.customerId}</p>
         <p><strong>Pickup Address:</strong> {delivery.pickupAddressString}</p>
         <p><strong>Delivery Address:</strong> {delivery.deliveryAddressString}</p>
-        <p><strong>Status:</strong> <span className={`status ${delivery.status}`}>{delivery.status}</span></p>
+        <p>
+          <strong>Status:</strong>{" "}
+          <span className={`status ${delivery.status}`}>{delivery.status}</span>
+        </p>
         <p><strong>Created At:</strong> {new Date(delivery.createdAt).toLocaleString()}</p>
       </div>
 
       <div className="buttons">
         {delivery.status === "assigned" && (
+          <button className="accept-btn" onClick={() => handleUpdateStatus("To be delivered")}>
+            📥 Accept Delivery
+          </button>
+        )}
+
+        {delivery.status === "To be delivered" && (
           <button className="picked-up-btn" onClick={() => handleUpdateStatus("Picked-up")}>
             🚚 Mark as Picked-Up
           </button>

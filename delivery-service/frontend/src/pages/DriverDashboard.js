@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { io } from "socket.io-client";
 import axios from "axios";
-import "./DriverDashboard.css"; // ✅ Importing CSS file
+import "./DriverDashboard.css";
 
 const socket = io("http://localhost:5003");
 
@@ -23,6 +23,21 @@ export default function DriverDashboard() {
       console.error("Failed to fetch deliveries:", error);
     } finally {
       setLoading(false);
+    }
+  };
+
+  const handleUpdateStatus = async (deliveryId, newStatus) => {
+    try {
+      const token = localStorage.getItem("driverToken");
+      const res = await axios.put(
+        `http://localhost:5003/api/delivery/${deliveryId}/status`,
+        { status: newStatus },
+        { headers: { Authorization: token } }
+      );
+      alert(res.data.message);
+      fetchDeliveries(); // Refresh list after update
+    } catch (err) {
+      alert(err.response?.data?.message || "Failed to update status");
     }
   };
 
@@ -126,31 +141,52 @@ export default function DriverDashboard() {
                   <td>{d.status}</td>
                   <td>{new Date(d.createdAt).toLocaleString()}</td>
                   <td>
-                    <button className="view-btn" onClick={() => handleViewDetails(d._id)}>View</button>
-                    <button 
-                            onClick={() => navigate(`/map-track/${d.orderId}`)} // ✅ Use orderId from delivery
-                            style={{
-                              padding: "6px 12px",
-                              backgroundColor: "grey",
-                              color: "white",
-                              border: "none",
-                              borderRadius: "4px",
-                              cursor: "pointer",
-                              marginTop: "5px",
-                              marginLeft: "10px",
-                              fontWeight:"bolder",
-                              fontSize:"medium"
-                            }}
-                          >
-                          📍Track Map
-                          </button>
+                    <button className="view-btn" onClick={() => handleViewDetails(d._id)}>
+                      View
+                    </button>
 
-                    {" "}
+                    <button
+                      onClick={() => navigate(`/map-track/${d.orderId}`)}
+                      style={{
+                        padding: "6px 12px",
+                        backgroundColor: "grey",
+                        color: "white",
+                        border: "none",
+                        borderRadius: "4px",
+                        cursor: "pointer",
+                        marginTop: "5px",
+                        marginLeft: "10px",
+                        fontWeight: "bolder",
+                        fontSize: "medium"
+                      }}
+                    >
+                      📍Show Route
+                    </button>
+
+                    {d.status === "assigned" && (
+                      <button
+                        className="accept-btn"
+                        onClick={() => handleUpdateStatus(d._id, "To be delivered")}
+                        style={{
+                          padding: "6px 10px",
+                          backgroundColor: "green",
+                          color: "white",
+                          border: "none",
+                          borderRadius: "4px",
+                          marginTop: "5px",
+                          marginLeft: "10px",
+                          fontWeight: "bold",
+                          fontSize: "small"
+                        }}
+                      >
+                        📥 Accept
+                      </button>
+                    )}
+
                     {d.status === "Delivered" && (
                       <button className="delete-btn" onClick={() => handleDeleteDelivery(d._id)}>
                         🗑️ Delete
                       </button>
-                      
                     )}
                   </td>
                 </tr>

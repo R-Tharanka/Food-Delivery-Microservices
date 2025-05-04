@@ -81,3 +81,18 @@
     font-weight: bold;
   }
   
+  .accept-btn {
+    background-color: #1976d2;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    margin: 10px;
+    cursor: pointer;
+    border-radius: 5px;
+    font-size: 16px;
+  }
+  
+  .accept-btn:hover {
+    background-color: #155a9c;
+  }
+  
