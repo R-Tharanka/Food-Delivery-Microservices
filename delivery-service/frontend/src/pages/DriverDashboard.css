@@ -1,0 +1,98 @@
+/* Header Section */
+.dashboard-header {
+    background-color: #f89a48;
+    color: white;
+    padding: 1rem;
+    text-align: center;
+  }
+  
+  /* Main Container */
+  .dashboard-container {
+    padding: 5rem;
+  }
+  
+  /* Buttons */
+  .dashboard-buttons {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 1rem;
+  }
+  
+  .create-btn {
+    background-color: #be8c17;
+    color: white;
+    padding: 10px 20px;
+    font-size: 20px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: bold;
+  }
+  
+  .logout-btn {
+    background-color: #e13c31;
+    color: rgb(253, 253, 253);
+    font-size: larger;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: bold;
+  }
+  
+  .delivery-title {
+    text-align: center;
+    color: #333;
+    margin-bottom: 1rem;
+  }
+  
+  /* Table Styles */
+  .delivery-table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: #f9f9f9;
+  }
+  
+  .delivery-table th, .delivery-table td {
+    padding: 12px;
+    border-bottom: 1px solid #ddd;
+    text-align: left;
+  }
+  
+  .delivery-table th {
+    background-color: #ddd;
+  }
+  
+  /* View and Delete Buttons */
+  .view-btn {
+    background-color: #76a7d0;
+    color: rgb(13, 8, 8);
+    font-size: smaller;
+    padding: 6px 12px;
+    border: none;
+    border-radius: 4px;
+    width: 75px;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: medium;
+  }
+  
+  .delete-btn {
+    background-color: #e53935;
+    color: white;
+    padding: 6px 12px;
+    border: none;
+    border-radius: 4px;
+   
+    cursor: pointer;
+    font-weight: bold;
+  }
+  
+  /* No deliveries text */
+  .no-deliveries {
+    text-align: center;
+    margin-top: 2rem;
+    color: #888;
+    font-style: italic;
+  }
+  

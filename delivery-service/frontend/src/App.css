@@ -1,0 +1,20 @@
+body {
+  font-family: sans-serif;
+  padding: 2rem;
+}
+
+form {
+  max-width: 400px;
+  margin: auto;
+  padding: 1rem;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+input, select, button {
+  display: block;
+  width: 100%;
+  margin: 10px 0;
+  padding: 10px;
+}
+
